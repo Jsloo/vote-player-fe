@@ -1,4 +1,5 @@
 import { Banner } from "./Banner";
+import { CalendarStrip } from "./CalendarStrip";
 import { MatchActionBar } from "./MatchActionBar";
 
 export function HomePage() {
@@ -6,6 +7,7 @@ export function HomePage() {
     <section aria-label="Promotional banner">
       <Banner />
       <MatchActionBar />
+      <CalendarStrip />
     </section>
   );
 }

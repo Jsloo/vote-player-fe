@@ -1,0 +1,109 @@
+.calendarStrip {
+  background: #ffffff;
+}
+
+/* ── first (always-visible) row ── */
+.calendarStripRow {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 8px 10px;
+}
+
+/* ── expanded panel ── */
+.calendarStripExpanded {
+  background: #1E6AC1F5;
+  padding: 8px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 0 0 16px 16px;
+}
+
+.calendarStripExpandedRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+/* ── date card ── */
+.calendarStripCard {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #005CC7;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.calendarStripExpanded .calendarStripCard {
+  color: #ffffff;
+  background: transparent;
+}
+
+.calendarStripCard:hover {
+  background: #f0f4ff;
+}
+
+.calendarStripExpanded .calendarStripCard:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.calendarStripCardSelected {
+  background: #1E6AC1F5 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.calendarStripExpanded .calendarStripCardSelected {
+  background: #ffffff !important;
+  color: #005CC7 !important;
+}
+
+.calendarStripCardDay {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.calendarStripCardMonth {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.calendarStripCardCount {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+/* ── expand / collapse toggle ── */
+.calendarStripToggle {
+  flex-shrink: 0;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #666666;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.calendarStripToggle:hover {
+  background: #f0f4ff;
+  color: #1a56cc;
+}
