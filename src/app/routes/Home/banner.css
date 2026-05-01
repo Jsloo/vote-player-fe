@@ -1,0 +1,12 @@
+.homeBanner {
+  width: calc(100% + 40px);
+  margin-inline: -20px;
+  margin-top: -16px;
+  border-block: 1px solid var(--border);
+}
+
+.homeBanner__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}

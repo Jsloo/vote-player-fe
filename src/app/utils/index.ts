@@ -1,0 +1,1 @@
+export { closeEmbeddedApp } from './iframe'
