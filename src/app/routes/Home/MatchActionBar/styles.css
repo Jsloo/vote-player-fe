@@ -1,0 +1,71 @@
+.matchActionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 10px;
+  background: #ffffff;
+}
+
+.matchActionBarLabel {
+  margin-inline-end: auto;
+  height: auto;
+  padding: 0 !important;
+  color: #0f5ec7;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  border: 0 !important;
+  background: transparent;
+  box-shadow: none !important;
+}
+
+.matchActionBarActions {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.matchActionBarTicketCountButton,
+.matchActionBarGetTicketsButton {
+  min-height: 20px !important;
+  height: 16px !important;
+  border: 0 !important;
+  padding: 2px 6px !important;
+  border-radius: 5px;
+  background: #0f65cf;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.matchActionBarTicketCountButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.matchActionBarTicketIconImage {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.matchActionBarTicketBadge {
+  margin-inline-start: 1px;
+}
+
+.matchActionBarTicketBadge .ant-badge-count {
+  min-width: 28px;
+  height: 14px;
+  padding-inline: 5px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+}

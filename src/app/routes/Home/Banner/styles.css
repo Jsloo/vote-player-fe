@@ -1,0 +1,46 @@
+.homeBanner {
+  position: relative;
+  width: calc(100% + 40px);
+  margin-inline: -20px;
+  margin-top: -16px;
+}
+
+.homeBannerImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.homeBannerBackButton {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  padding: 0 !important;
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.homeBannerBackButton.ant-btn-icon-only {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.homeBannerBackButton .ant-btn-icon {
+  font-size: 22px;
+}
+
+.homeBannerBackButton:hover,
+.homeBannerBackButton:focus-visible {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.24) !important;
+}
