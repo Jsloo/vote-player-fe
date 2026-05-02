@@ -59,14 +59,35 @@
 }
 
 .calendarStripCardSelected {
-  background: #1E6AC1F5 !important;
+  background: #1e6ac1f5 !important;
   color: #ffffff !important;
   border-radius: 8px;
 }
 
+/* first row — selected: gradient + double border */
+.calendarStripRow .calendarStripCardSelected {
+  border: 3px solid #1e6ac1 !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 0 0 2px #ffffff !important;
+  background: linear-gradient(
+    180deg,
+    #7396ff 0%,
+    #4a79ff 50%,
+    #0055ff 50%,
+    #0044cc 100%
+  ) !important;
+  color: #ffffff !important;
+}
+
+.calendarStripRow .calendarStripCardSelected .calendarStripCardCount {
+  opacity: 1;
+}
+
 .calendarStripExpanded .calendarStripCardSelected {
   background: #ffffff !important;
-  color: #005CC7 !important;
+  color: #005cc7 !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .calendarStripCardDay {
