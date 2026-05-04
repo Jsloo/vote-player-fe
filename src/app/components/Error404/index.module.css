@@ -1,0 +1,66 @@
+.popupContainer {
+  width: 300px;
+  padding: 24px;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 217, 255, 0.25);
+}
+
+.icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #a4effc, #00d9ff);
+  border-radius: 50%;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+  padding: 4px 0 6px;
+  background: linear-gradient(to right, #00d9ff, #a4effc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* `color: transparent` alone often clips gradient text in WebKit/Safari */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: gray;
+  margin: 4px 0 12px;
+}
+
+.message {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primaryButton {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  background: linear-gradient(to right, #00d9ff, #a4effc);
+  color: white;
+  transition: 0.3s;
+  z-index: 5;
+}
+
+.primaryButton:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0, 217, 255, 0.4);
+}

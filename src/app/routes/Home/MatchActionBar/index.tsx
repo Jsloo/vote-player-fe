@@ -10,12 +10,16 @@ export function MatchActionBar() {
   return (
     <div className="matchActionBar" aria-label="Match ticket actions">
       <Button type="text" className="matchActionBarLabel">
-        {t(translationKey.MATCH_ACTION_BAR_LABEL, 'WorldCup Match')}
+        {t(translationKey.MATCH_ACTION_BAR_LABEL, {
+          defaultValue: 'WorldCup Match',
+        })}
       </Button>
       <div className="matchActionBarActions">
         <Button type="primary" className="matchActionBarTicketCountButton">
           <img className="matchActionBarTicketIconImage" src={ticketIcon} alt="" aria-hidden="true" />
-          <span>{t(translationKey.MATCH_ACTION_BAR_TICKET, 'Ticket')}</span>
+          <span>
+            {t(translationKey.MATCH_ACTION_BAR_TICKET, { defaultValue: 'Ticket' })}
+          </span>
           <Badge
             count={1200}
             showZero
@@ -30,7 +34,9 @@ export function MatchActionBar() {
           />
         </Button>
         <Button type="primary" className="matchActionBarGetTicketsButton">
-          {t(translationKey.MATCH_ACTION_BAR_GET_TICKETS, 'Get Tickets ?')}
+          {t(translationKey.MATCH_ACTION_BAR_GET_TICKETS, {
+            defaultValue: 'Get Tickets ?',
+          })}
         </Button>
       </div>
     </div>

@@ -4,6 +4,9 @@ import enUS from 'antd/locale/en_US'
 import zhCN from 'antd/locale/zh_CN'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { BrowserRouter } from 'react-router'
+import { ReloginPopup } from '@/app/components/ReloginPopup'
+import { AuthProvider } from '@/providers/AuthProvider'
 
 const queryClient = new QueryClient()
 
@@ -23,7 +26,14 @@ function AntdConfigWithLocale({ children }: { children: ReactNode }) {
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <AntdConfigWithLocale>{children}</AntdConfigWithLocale>
+      <BrowserRouter>
+        <AuthProvider>
+          <AntdConfigWithLocale>
+            {children}
+            <ReloginPopup />
+          </AntdConfigWithLocale>
+        </AuthProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   )
 }
