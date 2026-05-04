@@ -13,8 +13,8 @@ export const GET_LANGUAGE_FILE = `${API_PUBLIC_BASE}/i18n`
 export const GET_CATEGORY = `${API_PUBLIC_BASE}/player/categories`
 export const GET_REGISTRATION_LINK = `${API_PUBLIC_BASE}/player/registration-link`
 
-/**
- * Lucky-draw `STREAM_CONNECT` / SSE — not opened in vote-player-fe (no `EventSource` / `useSubscribe`).
- * Kept for URL parity and future use.
- */
-export const STREAM_CONNECT = `${API_PUBLIC_BASE}/stream/connect`
+/** Server-Sent Events (Swagger: `GET /api/public/sse/connect`). */
+export const SSE_CONNECT = `${API_PUBLIC_BASE}/sse/connect`
+
+/** @deprecated Use {@link SSE_CONNECT} — kept for older imports. */
+export const STREAM_CONNECT = SSE_CONNECT

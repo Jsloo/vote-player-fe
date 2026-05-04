@@ -7,5 +7,6 @@ export {
   GET_REGISTRATION_LINK,
   GET_SESSION_ID,
   GET_USR_DETAIL,
+  SSE_CONNECT,
   STREAM_CONNECT,
 } from './url'

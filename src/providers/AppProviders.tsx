@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { BrowserRouter } from 'react-router'
 import { ReloginPopup } from '@/app/components/ReloginPopup'
 import { AuthProvider } from '@/providers/AuthProvider'
+import { EventProvider } from '@/providers/EventProvider'
 
 const queryClient = new QueryClient()
 
@@ -28,10 +29,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <AntdConfigWithLocale>
-            {children}
-            <ReloginPopup />
-          </AntdConfigWithLocale>
+          <EventProvider>
+            <AntdConfigWithLocale>
+              {children}
+              <ReloginPopup />
+            </AntdConfigWithLocale>
+          </EventProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
