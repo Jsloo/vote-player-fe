@@ -38,9 +38,7 @@ export function EventProvider({ children }: { children: ReactNode }) {
   const attachedTypesRef = useRef(new Set<string>())
   const connectingSeqRef = useRef(0)
 
-  const notifyRef = useRef<(eventType: string, data: string) => void>(() => {})
-
-  const notify = useCallback((eventType: string, data: string) => {
+  const deliver = useCallback((eventType: string, data: string) => {
     subsRef.current.forEach((sub) => {
       if (sub.eventTypes.has('*') || sub.eventTypes.has(eventType)) {
         try {
@@ -51,8 +49,6 @@ export function EventProvider({ children }: { children: ReactNode }) {
       }
     })
   }, [])
-
-  notifyRef.current = notify
 
   const disconnect = useCallback(() => {
     esRef.current?.close()
@@ -78,19 +74,16 @@ export function EventProvider({ children }: { children: ReactNode }) {
       attachedTypesRef.current.add(type)
       if (type === 'message') {
         es.onmessage = (ev) => {
-          notifyRef.current('message', ev.data)
+          deliver('message', ev.data)
         }
       } else {
         es.addEventListener(type, (ev) => {
           const msg = ev as MessageEvent
-          notifyRef.current(
-            type,
-            typeof msg.data === 'string' ? msg.data : String(msg.data),
-          )
+          deliver(type, typeof msg.data === 'string' ? msg.data : String(msg.data))
         })
       }
     })
-  }, [])
+  }, [deliver])
 
   const syncConnection = useCallback(async () => {
     const seq = ++connectingSeqRef.current

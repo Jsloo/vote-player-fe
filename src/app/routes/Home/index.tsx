@@ -8,9 +8,7 @@ import { MatchActionBar } from './MatchActionBar'
 
 const DEFAULT_SSE_EVENTS = ['message'] as const
 
-export function HomePage() {
-  const { pageReady } = usePageReady()
-
+function HomeHallContent() {
   const onSse = useCallback((payload: { data: string; eventType: string }) => {
     if (import.meta.env.DEV) {
       console.debug('[SSE]', payload.eventType, payload.data)
@@ -19,10 +17,6 @@ export function HomePage() {
 
   useSubscribe(onSse, [...DEFAULT_SSE_EVENTS])
 
-  if (!pageReady) {
-    return <MainHallSkeleton />
-  }
-
   return (
     <section aria-label="Promotional banner">
       <Banner />
@@ -30,4 +24,14 @@ export function HomePage() {
       <CalendarStrip />
     </section>
   )
+}
+
+export function HomePage() {
+  const { pageReady } = usePageReady()
+
+  if (!pageReady) {
+    return <MainHallSkeleton />
+  }
+
+  return <HomeHallContent />
 }
