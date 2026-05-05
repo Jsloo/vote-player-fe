@@ -1,7 +1,7 @@
 .container {
   position: relative;
   width: 100%;
-  padding: 20px 4px;
+  padding: 20px 0;
   box-sizing: border-box;
   overflow: visible;
 }
@@ -9,295 +9,244 @@
 .cardLayer {
   position: relative;
   width: 100%;
-  transform: scale(1.08);
-  transform-origin: bottom center;
+  aspect-ratio: 3.6 / 1.52;
 }
 
-.background {
+.layer1Background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 105%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+}
+
+.layer2Flags {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16%;
+  padding: 9.2% 12% 0;
+  box-sizing: border-box;
+}
+
+.flagSlot {
+  width: 35%;
+  aspect-ratio: 1.3 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flagImage {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer3Frames {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 9%;
+  box-sizing: border-box;
+}
+
+.countryFrameCenter {
+  width: 65%;
   height: auto;
   display: block;
 }
 
-.matchOverlay {
+.countryNameRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 62%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 23%;
+  box-sizing: border-box;
+}
+
+.countryNameBg {
+  width: 25%;
+  height: auto;
+  display: block;
+}
+
+.layer4Mascots {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 5% 8% 10%;
-  box-sizing: border-box;
+  z-index: 5;
   pointer-events: none;
 }
 
-.matchOverlayEmpty {
-  opacity: 0.92;
-}
-
 .ribbonText {
-  align-self: center;
-  margin-top: -3%;
-  margin-bottom: -1.5%;
-  max-width: 100%;
-  padding: 0 4px;
-  box-sizing: border-box;
-  font-size: clamp(12px, 2.5vw, 16px);
+  margin: -3.5% auto 0;
+  width: 54%;
+  text-align: center;
+  font-size: clamp(14px, 2.2vw, 20px);
   font-weight: 700;
   color: #fff;
-  text-align: center;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Outer / inner regions (flags → votes), per annotated layout */
-.matchBody {
-  flex: 1;
+.layer5Text {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  width: 100%;
-  margin-top: 0.5%;
+  pointer-events: none;
+}
+
+.teamTextRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 58.5%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 22%;
   box-sizing: border-box;
 }
 
-.matchInner {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Center: matchName + titleName pill only — separate from score */
-.centerMeta {
+.teamTextCol {
+  width: 28%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
 
-.matchNameLine {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 0 4px;
-  font-size: clamp(9px, 2.3vw, 11px);
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.matchNameLineMuted {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 0 4px;
-  font-size: clamp(9px, 2.3vw, 11px);
-  font-weight: 600;
-  color: rgb(255 255 255 / 55%);
-  text-align: center;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.titleNamePill {
-  display: inline-block;
-  max-width: 100%;
-  padding: 0 6px;
-  border-radius: 6px;
-  text-align: center;
-  line-height: 1.15;
-  background: rgb(255 255 255 / 12%);
-  border: 1px solid rgb(255 255 255 / 22%);
-  box-sizing: border-box;
-}
-
-.titleNamePillMuted {
-  display: inline-block;
-  max-width: 100%;
-  padding: 0 6px;
-  border-radius: 6px;
-  text-align: center;
-  line-height: 1.15;
-  background: rgb(255 255 255 / 8%);
-  border: 1px solid rgb(255 255 255 / 16%);
-  box-sizing: border-box;
-}
-
-.titleName {
-  display: block;
-  font-size: clamp(8px, 2.1vw, 10px);
-  font-weight: 600;
-  line-height: 1.15;
-  color: #e8f4ff;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.titleNameMuted {
-  display: block;
-  font-size: clamp(8px, 2.1vw, 10px);
-  font-weight: 600;
-  line-height: 1.15;
-  color: rgb(232 244 255 / 72%);
-  text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.teamsBand {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 3%;
-  min-height: 0;
-}
-
-.centerBand {
-  flex: 1 1 0;
+.centerTextCol {
+  width: 34%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  min-width: 0;
-  max-width: 40%;
-  margin-top: -2%;
-}
-
-.centerScore {
-  flex: 0 0 auto;
-  width: 100%;
-  text-align: center;
-}
-
-.teamColumn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-}
-
-.teamFlagSlot,
-.teamNameSlot,
-.teamVotesSlot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.flagRing {
-  width: clamp(44px, 22vw, 88px);
-  height: clamp(44px, 22vw, 88px);
-  border-radius: 50%;
-  background: rgb(255 255 255 / 18%);
-  border: 2px solid rgb(255 255 255 / 45%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.flagImg {
-  width: 78%;
-  height: 78%;
-  object-fit: contain;
-}
-
-.flagRingEmpty {
-  border-style: dashed;
-  opacity: 0.55;
-}
-
-.teamNameMuted {
-  font-size: clamp(9px, 2.4vw, 12px);
-  font-weight: 600;
-  color: rgb(255 255 255 / 55%);
-  text-align: center;
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: rgb(15 101 207 / 35%);
-}
-
-.voteLineMuted {
-  font-size: clamp(8px, 2vw, 10px);
-  color: rgb(255 255 255 / 45%);
+  gap: 1px;
+  margin-top: -15.5%;
 }
 
 .teamName {
-  font-size: clamp(9px, 2.4vw, 12px);
+  max-width: 100%;
+  font-size: clamp(9px, 2vw, 11px);
   font-weight: 700;
   color: #fff;
   text-align: center;
-  max-width: 100%;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: rgb(15 101 207 / 55%);
 }
 
 .voteLine {
-  font-size: clamp(8px, 2vw, 10px);
-  color: rgb(255 255 255 / 85%);
+  max-width: 120%;
+  font-size: clamp(6px, 1.9vw, 10px);
+  font-weight: 800;
+  color: rgb(255 255 255 / 88%);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.matchName {
+  width: 92%;
+  max-width: 100%;
+  font-size: clamp(8px, 1.8vw, 10px);
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bottomRibbonText {
+  position: absolute;
+  left: 50%;
+  top: 6.5%;
+  transform: translateX(-50%);
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
 .scoreText {
-  font-size: clamp(10px, 4.5vw, 18px);
+  font-size: clamp(11px, 3vw, 16px);
   font-weight: 800;
   color: #fff;
-  text-shadow: 0 2px 4px rgb(0 0 0 / 35%);
-  letter-spacing: 0.02em;
-}
-
-.scoreTextMuted {
-  font-size: clamp(10px, 4vw, 16px);
-  font-weight: 700;
-  color: rgb(255 255 255 / 45%);
-  letter-spacing: 0.08em;
+  text-shadow: 0 2px 4px rgb(0 0 0 / 45%);
 }
 
 .mascotLeft {
   position: absolute;
-  z-index: 3;
-  left: 6%;
-  bottom: 30%;
-  width: 14%;
+  left: 2.5%;
+  bottom: 11%;
+  width: 21%;
   height: auto;
-  pointer-events: none;
 }
 
 .mascotRight {
   position: absolute;
-  z-index: 3;
-  right: 6%;
-  bottom: 30%;
-  width: 14%;
+  right: 3%;
+  bottom: 12%;
+  width: 18%;
   height: auto;
-  transform: scaleX(-1);
-  pointer-events: none;
+}
+
+.titleName {
+  max-width: 92%;
+  font-size: clamp(8px, 1.8vw, 10px);
+  font-weight: 600;
+  color: rgb(234 247 255 / 96%);
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
+  padding: 1px 8px;
+  border: 1px solid rgb(255 255 255 / 88%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 8%);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.watchLiveNow {
+  position: absolute;
+  left: 51.5%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-size: clamp(10px, 2vw, 12px);
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
+  line-height: 1.05;
+  white-space: normal;
+  word-break: break-word;
 }

@@ -1,6 +1,9 @@
 import { DotLoading } from 'antd-mobile'
 import liveMatchBg from '@/assets/image/live-match.png'
+import countryFrame from '@/assets/image/country-frame.png'
+import countryNameBg from '@/assets/image/country-name.png'
 import deerMascot from '@/assets/image/deer-mascot.png'
+import birdMascot from '@/assets/image/bird-mascot.png'
 import type { PlayerMatchResponse } from '@/app/contract'
 import { formatMatchRibbonTime } from '@/app/utils/formatMatchRibbonTime'
 import styles from './index.module.css'
@@ -21,128 +24,68 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
   return (
     <div className={styles.container}>
       <div className={styles.cardLayer}>
-        <img
-          src={liveMatchBg}
-          alt=""
-          aria-hidden="true"
-          className={styles.background}
-        />
-        <div
-          className={`${styles.matchOverlay}${empty ? ` ${styles.matchOverlayEmpty}` : ''}`}
-          aria-busy={isLoading}
-        >
-          {empty || !hasTeams ? (
-            <>
-              <div className={styles.ribbonText}>
-                {isLoading ? <DotLoading color="white" /> : '—'}
-              </div>
-              <div className={styles.matchBody}>
-                <div className={styles.matchInner}>
-                  <div className={styles.teamsBand}>
-                    <div className={styles.teamColumn}>
-                      <div className={styles.teamFlagSlot}>
-                        <div className={`${styles.flagRing} ${styles.flagRingEmpty}`} />
-                      </div>
-                      <div className={styles.teamNameSlot}>
-                        <span className={styles.teamNameMuted}>—</span>
-                      </div>
-                      <div className={styles.teamVotesSlot}>
-                        <span className={styles.voteLineMuted}>Total Vote: —</span>
-                      </div>
-                    </div>
-                    <div className={styles.centerBand}>
-                      <div className={styles.centerMeta}>
-                        <div className={styles.matchNameLineMuted}>—</div>
-                        <span className={styles.titleNamePillMuted}>
-                          <span className={styles.titleNameMuted}>No live match</span>
-                        </span>
-                      </div>
-                      <div className={styles.centerScore}>
-                        <span className={styles.scoreTextMuted}>—</span>
-                      </div>
-                    </div>
-                    <div className={styles.teamColumn}>
-                      <div className={styles.teamFlagSlot}>
-                        <div className={`${styles.flagRing} ${styles.flagRingEmpty}`} />
-                      </div>
-                      <div className={styles.teamNameSlot}>
-                        <span className={styles.teamNameMuted}>—</span>
-                      </div>
-                      <div className={styles.teamVotesSlot}>
-                        <span className={styles.voteLineMuted}>Total Vote: —</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.ribbonText}>
-                {formatMatchRibbonTime(match.matchTime)}
-              </div>
-              <div className={styles.matchBody}>
-                <div className={styles.matchInner}>
-                  <div className={styles.teamsBand}>
-                    <div className={styles.teamColumn}>
-                      <div className={styles.teamFlagSlot}>
-                        <div className={styles.flagRing}>
-                          <img src={home.team.logoUrl} alt="" className={styles.flagImg} />
-                        </div>
-                      </div>
-                      <div className={styles.teamNameSlot}>
-                        <span className={styles.teamName}>{home.team.name}</span>
-                      </div>
-                      <div className={styles.teamVotesSlot}>
-                        <span className={styles.voteLine}>Total Vote: {home.votedCount}</span>
-                      </div>
-                    </div>
-                    <div className={styles.centerBand}>
-                      <div className={styles.centerMeta}>
-                        <div className={styles.matchNameLine}>{match.matchName}</div>
-                        {match.titleName?.trim() ? (
-                          <span className={styles.titleNamePill}>
-                            <span className={styles.titleName}>{match.titleName}</span>
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className={styles.centerScore}>
-                        <span className={styles.scoreText}>
-                          {home.score} - {away.score}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.teamColumn}>
-                      <div className={styles.teamFlagSlot}>
-                        <div className={styles.flagRing}>
-                          <img src={away.team.logoUrl} alt="" className={styles.flagImg} />
-                        </div>
-                      </div>
-                      <div className={styles.teamNameSlot}>
-                        <span className={styles.teamName}>{away.team.name}</span>
-                      </div>
-                      <div className={styles.teamVotesSlot}>
-                        <span className={styles.voteLine}>Total Vote: {away.votedCount}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+        <img src={liveMatchBg} alt="" aria-hidden="true" className={styles.layer1Background} />
+
+        <div className={styles.layer2Flags} aria-hidden="true">
+          <div className={styles.flagSlot}>
+            {hasTeams ? <img src={home.team.logoUrl} alt="" className={styles.flagImage} /> : null}
+          </div>
+          <div className={styles.flagSlot}>
+            {hasTeams ? <img src={away.team.logoUrl} alt="" className={styles.flagImage} /> : null}
+          </div>
         </div>
-        <img
-          src={deerMascot}
-          alt=""
-          aria-hidden="true"
-          className={styles.mascotLeft}
-        />
-        <img
-          src={deerMascot}
-          alt=""
-          aria-hidden="true"
-          className={styles.mascotRight}
-        />
+
+        <div className={styles.layer3Frames} aria-hidden="true">
+          <img src={countryFrame} alt="" className={styles.countryFrameCenter} />
+          <div className={styles.countryNameRow}>
+            <img src={countryNameBg} alt="" className={styles.countryNameBg} />
+            <img src={countryNameBg} alt="" className={styles.countryNameBg} />
+          </div>
+        </div>
+
+        <div className={styles.layer4Mascots} aria-hidden="true">
+          <img src={deerMascot} alt="" className={styles.mascotLeft} />
+          <img src={birdMascot} alt="" className={styles.mascotRight} />
+        </div>
+
+        <div className={styles.layer5Text} aria-busy={isLoading}>
+          <div className={styles.ribbonText}>
+            {empty || !hasTeams
+              ? isLoading
+                ? <DotLoading color="white" />
+                : '—'
+              : formatMatchRibbonTime(match.matchTime)}
+          </div>
+
+          <div className={styles.teamTextRow}>
+            <div className={styles.teamTextCol}>
+              <span className={styles.teamName}>{hasTeams ? home.team.name : '—'}</span>
+              <span className={styles.voteLine}>Total Vote {hasTeams ? home.votedCount : '—'}</span>
+            </div>
+            <div className={styles.centerTextCol}>
+              <span className={styles.scoreText}>
+                {hasTeams ? `${home.score} - ${away.score}` : '—'}
+              </span>
+            </div>
+            <div className={styles.teamTextCol}>
+              <span className={styles.teamName}>{hasTeams ? away.team.name : '—'}</span>
+              <span className={styles.voteLine}>Total Vote {hasTeams ? away.votedCount : '—'}</span>
+            </div>
+          </div>
+
+          <div className={styles.bottomRibbonText}>
+            <span className={styles.matchName}>{hasTeams ? match.matchName : '—'}</span>
+            <span className={styles.titleName}>
+              {hasTeams ? match.titleName || '—' : 'No live match'}
+            </span>
+          </div>
+          {hasTeams && match.status === 'LIVE' ? (
+            <span className={styles.watchLiveNow}>
+              <span>• Watch</span>
+              <span>Live Now</span>
+            </span>
+          ) : null}
+        </div>
       </div>
     </div>
   )

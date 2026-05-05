@@ -33,7 +33,7 @@ export const PlayerMatchResponseSchema = z.object({
   matchTime: z.string(),
   basePoints: z.number(),
   status: MatchStatusSchema,
-  winnerTeamId: z.number(),
+  winnerTeamId: z.number().nullable(),
   teams: z.array(MatchTeamResponseSchema),
   draw: z.boolean(),
 });
