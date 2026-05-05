@@ -1,6 +1,5 @@
 import {
   createContext,
-  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -8,11 +7,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { skipToken } from "@tanstack/react-query";
 import { useLocation } from "react-router";
+import { tsr } from "@/app/contract";
 import { ErrorCode } from "@/app/constant/errorCode";
-import { HTTP_METHOD } from "@/app/constant/httpMethod";
-import { GET_USR_DETAIL } from "@/app/constant/url";
-import { apiRequest } from "@/app/utils/apiRequest";
 import {
   SESSION_CHANGED_EVENT,
   getSessionTokenForRequest,
@@ -40,9 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => getSessionTokenForRequest() || null,
   );
   const [authError, setAuthError] = useState<ErrorCode | null>(null);
-  const [user, setUser] = useState<unknown | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadTick, setLoadTick] = useState(0);
+  const [i18nReady, setI18nReady] = useState(false);
 
   const triggerAuthError = useCallback((code: ErrorCode) => {
     setAuthError(code);
@@ -61,56 +57,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(SESSION_CHANGED_EVENT, sync);
   }, []);
 
-  /** True once `?sessionId=` (or prior storage) is synced — then hall can run `getUsrDetail` off `/init`. */
+  useEffect(() => {
+    void initI18n().finally(() => setI18nReady(true));
+  }, []);
+
   const ready = !!sessionId;
 
-  /**
-   * Session chain step 3: after main hall / `pageReady`, load player via `GET_USR_DETAIL` + `apiRequest`
-   * (`sessionToken` query + `X-Session-Id` header from storage). Skipped on `/init`.
-   */
-  const getUsrDetail = useCallback(async () => {
-    if (!sessionId || isInitPage) {
-      setUser(null);
-      return;
-    }
+  const canLoadPlayer = !!sessionId && !isInitPage && i18nReady;
 
-    // i18next core is sync-initialized in `main`; this still merges remote bundles before first player REST call.
-    await initI18n();
-
-    setIsLoading(true);
-    try {
-      const result = await apiRequest<unknown>({
-        url: GET_USR_DETAIL,
-        method: HTTP_METHOD.GET,
-        params: { sessionToken: sessionId },
-      });
-      setUser(result.data);
-    } catch (e) {
-      console.error("Failed to fetch user:", e);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [sessionId, isInitPage]);
+  const {
+    data: user,
+    isFetching,
+    error,
+    refetch,
+  } = tsr.getPlayer.useQuery({
+    queryKey: ["getPlayer", sessionId],
+    queryData: canLoadPlayer
+      ? { query: { sessionToken: sessionId } }
+      : skipToken,
+  });
 
   useEffect(() => {
-    queueMicrotask(() => {
-      startTransition(() => {
-        void getUsrDetail();
-      });
-    });
-  }, [getUsrDetail, loadTick]);
-
-  const refetch = useCallback(() => {
-    setLoadTick((n) => n + 1);
-  }, []);
+    if (error) {
+      console.error("Failed to fetch user:", error);
+    }
+  }, [error]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
       sessionId,
       ready,
-      user: ready && !isInitPage ? user : null,
-      isLoading: ready && !isInitPage && isLoading,
-      refetch,
+      user: canLoadPlayer ? (user ?? null) : null,
+      isLoading: canLoadPlayer && isFetching,
+      refetch: () => {
+        void refetch();
+      },
       authError,
       triggerAuthError,
       clearAuthError,
@@ -118,9 +99,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [
       sessionId,
       ready,
-      isInitPage,
+      canLoadPlayer,
       user,
-      isLoading,
+      isFetching,
       refetch,
       authError,
       triggerAuthError,

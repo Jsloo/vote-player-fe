@@ -6,6 +6,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BrowserRouter } from 'react-router'
 import { ReloginPopup } from '@/app/components/ReloginPopup'
+import { tsr } from '@/app/contract'
 import { AuthProvider } from '@/providers/AuthProvider'
 import { EventProvider } from '@/providers/EventProvider'
 
@@ -25,18 +26,22 @@ function AntdConfigWithLocale({ children }: { children: ReactNode }) {
 }
 
 export function AppProviders({ children }: { children: ReactNode }) {
+  const TsrReactQueryProvider = tsr.ReactQueryProvider
+
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <EventProvider>
-            <AntdConfigWithLocale>
-              {children}
-              <ReloginPopup />
-            </AntdConfigWithLocale>
-          </EventProvider>
-        </AuthProvider>
-      </BrowserRouter>
+      <TsrReactQueryProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <EventProvider>
+              <AntdConfigWithLocale>
+                {children}
+                <ReloginPopup />
+              </AntdConfigWithLocale>
+            </EventProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </TsrReactQueryProvider>
     </QueryClientProvider>
   )
 }

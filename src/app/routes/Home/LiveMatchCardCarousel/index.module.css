@@ -1,0 +1,15 @@
+.swiperRoot {
+  width: 100%;
+}
+
+/* Let mascots extend past the card; default adm-swiper uses overflow: hidden. */
+.swiperRoot :global(.adm-swiper) {
+  width: 100%;
+  --width: 100%;
+  --height: auto;
+  overflow: visible;
+}
+
+.swiper {
+  width: 100%;
+}
