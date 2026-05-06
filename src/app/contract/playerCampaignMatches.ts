@@ -45,11 +45,19 @@ export const PlayerMatchesByDateSchema = z.object({
 
 export const PlayerMatchesByDateListSchema = z.array(PlayerMatchesByDateSchema);
 
+export const MatchCountByDateSchema = z.object({
+  date: z.string(),
+  totalMatches: z.number(),
+});
+
+export const MatchCountByDateListSchema = z.array(MatchCountByDateSchema);
+
 export type MatchStatus = z.infer<typeof MatchStatusSchema>;
 export type TeamResponse = z.infer<typeof TeamResponseSchema>;
 export type MatchTeamResponse = z.infer<typeof MatchTeamResponseSchema>;
 export type PlayerMatchResponse = z.infer<typeof PlayerMatchResponseSchema>;
 export type PlayerMatchesByDate = z.infer<typeof PlayerMatchesByDateSchema>;
+export type MatchCountByDate = z.infer<typeof MatchCountByDateSchema>;
 
 /** Shared public API envelope: session invalid + success flag, then unwrap `data`. */
 export function publicEnvelopeSchema<T extends z.ZodTypeAny>(dataSchema: T) {
@@ -76,6 +84,11 @@ export function publicEnvelopeSchema<T extends z.ZodTypeAny>(dataSchema: T) {
 
 export const PlayerCampaignMatchesEnvelopeSchema = publicEnvelopeSchema(
   PlayerMatchesByDateListSchema,
+);
+
+/** GET …/matches/count-by-date — same `{ success, code, message, data }` envelope as other public APIs. */
+export const MatchCountByDateEnvelopeSchema = publicEnvelopeSchema(
+  MatchCountByDateListSchema,
 );
 
 export function parseCampaignIdFromEnv(): number | null {
@@ -110,9 +123,24 @@ export const playerCampaignMatchesContract = c.router({
     pathParams: z.object({
       campaignId: z.coerce.number(),
     }),
+    query: z.object({
+      /** ISO date `YYYY-MM-DD` */
+      date: z.string(),
+    }),
     responses: {
       200: PlayerCampaignMatchesEnvelopeSchema,
     },
     summary: "List campaign matches grouped by date",
+  },
+  getMatchesCountByDate: {
+    method: "GET",
+    path: "/player/campaigns/:campaignId/matches/count-by-date",
+    pathParams: z.object({
+      campaignId: z.coerce.number(),
+    }),
+    responses: {
+      200: MatchCountByDateEnvelopeSchema,
+    },
+    summary: "Match counts per date for campaign calendar",
   },
 });

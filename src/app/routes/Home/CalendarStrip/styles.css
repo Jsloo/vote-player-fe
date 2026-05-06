@@ -1,5 +1,18 @@
 .calendarStrip {
+  position: relative;
+  z-index: 0;
   background: #ffffff;
+}
+
+/* Stack above live match / content below when overlay is open */
+.calendarStrip--expanded {
+  z-index: 30;
+}
+
+.calendarStripStatus {
+  padding: 12px 10px;
+  font-size: 14px;
+  color: #666666;
 }
 
 /* ── first (always-visible) row ── */
@@ -10,20 +23,41 @@
   padding: 8px 10px;
 }
 
-/* ── expanded panel ── */
+/* ── expanded panel (overlays content below; does not push layout) ── */
 .calendarStripExpanded {
-  background: #1E6AC1F5;
-  padding: 8px 10px 12px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 1;
+  background: #1e6ac1f5;
+  padding: 0;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+/* Show at most ~3 rows; scroll when there are more */
+.calendarStripExpandedScroll {
+  max-height: calc(
+    3 * var(--calendar-strip-expanded-row-min, 40px) + 2 * 3px
+  );
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 10px 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  border-radius: 0 0 16px 16px;
+  gap: 3px;
+  box-sizing: border-box;
 }
 
 .calendarStripExpandedRow {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
+  min-height: var(--calendar-strip-expanded-row-min, 46px);
+  flex-shrink: 0;
 }
 
 /* ── date card ── */
@@ -101,7 +135,7 @@
 }
 
 .calendarStripCardCount {
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 600;
   opacity: 0.75;
   white-space: nowrap;

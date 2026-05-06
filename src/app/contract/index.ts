@@ -10,6 +10,9 @@ import { genFingerprint } from "@/app/utils/genFingerprint";
 import { safeParseStorage } from "@/app/utils/sessionTools";
 import i18n from "@/i18n";
 import {
+  MatchCountByDateEnvelopeSchema,
+  MatchCountByDateListSchema,
+  MatchCountByDateSchema,
   MatchStatusSchema,
   MatchTeamResponseSchema,
   PlayerCampaignMatchesEnvelopeSchema,
@@ -24,6 +27,7 @@ import {
 import { playerSessionContract } from "./playerSession";
 
 export type {
+  MatchCountByDate,
   MatchStatus,
   MatchTeamResponse,
   PlayerMatchResponse,
@@ -32,6 +36,9 @@ export type {
 } from "./playerCampaignMatches";
 
 export {
+  MatchCountByDateEnvelopeSchema,
+  MatchCountByDateListSchema,
+  MatchCountByDateSchema,
   MatchStatusSchema,
   MatchTeamResponseSchema,
   PlayerCampaignMatchesEnvelopeSchema,

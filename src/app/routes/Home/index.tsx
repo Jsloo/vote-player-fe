@@ -1,6 +1,12 @@
 import { skipToken } from '@tanstack/react-query'
-import { useCallback, useEffect, useMemo } from 'react'
-import { parseCampaignIdFromEnv, selectLiveMatchesWithTwoTeams, tsr } from '@/app/contract'
+import dayjs, { type Dayjs } from 'dayjs'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  type PlayerMatchResponse,
+  parseCampaignIdFromEnv,
+  selectLiveMatchesWithTwoTeams,
+  tsr,
+} from '@/app/contract'
 import { usePageReady } from '@/app/hook/usePageReady'
 import { useSubscribe } from '@/app/hook/useSubscribe'
 import { Banner } from './Banner'
@@ -13,13 +19,27 @@ const DEFAULT_SSE_EVENTS = ['message'] as const
 
 function HomeHallContent() {
   const campaignId = useMemo(() => parseCampaignIdFromEnv(), [])
-  const { data: liveMatches, isPending, isError, error } = tsr.getMatch.useQuery({
-    queryData: campaignId !== null ? { params: { campaignId } } : skipToken,
+  const [selectedMatchDate, setSelectedMatchDate] = useState<Dayjs>(() => dayjs())
+
+  const setSelectedMatchDateStable = useCallback((d: Dayjs) => {
+    setSelectedMatchDate(d)
+  }, [])
+
+  const selectedDateStr = selectedMatchDate.format('YYYY-MM-DD')
+
+  const { data: liveMatches, isPending, isError, error } = tsr.getMatch.useQuery<
+    PlayerMatchResponse[]
+  >({
+    queryKey: ['getMatch', campaignId, selectedDateStr],
+    queryData:
+      campaignId !== null
+        ? { params: { campaignId }, query: { date: selectedDateStr } }
+        : skipToken,
     select: (response) => {
       if (response.status !== 200) {
         return []
       }
-      return selectLiveMatchesWithTwoTeams(response.body)
+      return selectLiveMatchesWithTwoTeams(response.body ?? [])
     },
   })
 
@@ -41,8 +61,12 @@ function HomeHallContent() {
     <section aria-label="Promotional banner">
       <Banner />
       <MatchActionBar />
-      <CalendarStrip />
-      {campaignId != null ? (
+      <CalendarStrip
+        campaignId={campaignId}
+        selectedDate={selectedMatchDate}
+        onSelectedDateChange={setSelectedMatchDateStable}
+      />
+      {campaignId != null && (isPending || (liveMatches?.length ?? 0) > 0) ? (
         <LiveMatchCardCarousel matches={liveMatches ?? []} isPending={isPending} />
       ) : null}
     </section>

@@ -10,14 +10,18 @@ export type LiveMatchCardCarouselProps = {
 
 export function LiveMatchCardCarousel({ matches, isPending }: LiveMatchCardCarouselProps) {
   const slides: (PlayerMatchResponse | null)[] =
-    matches.length > 0 ? matches : [null]
+    matches.length > 0 ? matches : isPending ? [null] : []
+
+  if (slides.length === 0) {
+    return null
+  }
 
   const swipeEnabled = matches.length > 1
 
   return (
     <div className={styles.swiperRoot}>
       <Swiper
-        key={matches.length > 0 ? matches.map((m) => m.id).join('-') : 'empty'}
+        key={matches.length > 0 ? matches.map((m) => m.id).join('-') : 'pending'}
         className={styles.swiper}
         allowTouchMove={swipeEnabled}
         indicator={swipeEnabled ? undefined : false}
