@@ -16,12 +16,14 @@ import {
   MatchStatusSchema,
   MatchTeamResponseSchema,
   PlayerCampaignMatchesEnvelopeSchema,
+  PlayerMatchListEnvelopeSchema,
   PlayerMatchResponseSchema,
   PlayerMatchesByDateListSchema,
   PlayerMatchesByDateSchema,
   TeamResponseSchema,
   parseCampaignIdFromEnv,
   playerCampaignMatchesContract,
+  selectDateMatchesWithTwoTeams,
   selectLiveMatchesWithTwoTeams,
 } from "./playerCampaignMatches";
 import { playerSessionContract } from "./playerSession";
@@ -49,7 +51,9 @@ export {
   parseCampaignIdFromEnv,
   playerCampaignMatchesContract,
   playerSessionContract,
+  selectDateMatchesWithTwoTeams,
   selectLiveMatchesWithTwoTeams,
+  PlayerMatchListEnvelopeSchema,
 };
 
 async function appendPlayerPublicQuery(path: string) {

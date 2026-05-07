@@ -1,0 +1,238 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  background: linear-gradient(170deg, #2e82e0 0%, #1254a8 100%);
+  border-radius: 12px;
+  padding: 0 5px 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  min-width: 0;
+  height: 100%;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 78%;
+  height: 15%;
+  min-height: 18px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 0 0 8px 8px;
+  padding: 0 3px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.headerStage {
+  font-size: 7px;
+  font-weight: 600;
+  color: #1a5fbe;
+  line-height: 1.05;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.headerTime {
+  font-size: 6px;
+  font-weight: 500;
+  color: #4d6f9f;
+  line-height: 1.05;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Teams row ── */
+.teamsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  padding: 1px 1px 0;
+  flex-shrink: 0;
+}
+
+.teamCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+.sideLabel {
+  font-size: 7px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  line-height: 1;
+}
+
+.flagWrap {
+  position: relative;
+  width: 46px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.flagImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frameOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.teamName {
+  font-size: 8px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ── Center VS ── */
+.centerCol {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.vs {
+  font-size: 10px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.liveBadge {
+  font-size: 6px;
+  font-weight: 800;
+  color: #ffffff;
+  background: #e53935;
+  border-radius: 3px;
+  padding: 1px 3px;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+}
+
+/* ── Vote button ── */
+.voteBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.voteBtnImg {
+  width: 58%;
+  height: auto;
+  display: block;
+}
+
+.voteBtnText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  font-size: 7px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── Vote bar ── */
+.voteBarRow {
+  width: 100%;
+  padding: 0 1px;
+  margin-top: auto;
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.voteBar {
+  position: relative;
+  width: 85%;
+  margin: 0 auto;
+  height: 12px;
+  border-radius: 999px;
+  border: 1.5px solid #f6efcf;
+  background: #2b9be8;
+  box-shadow: inset 0 0 0 1px rgba(16, 81, 164, 0.45);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.voteBarTrack {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.voteBarHome {
+  background: linear-gradient(0deg, #1696e7 0%, #37bfff 100%);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.voteBarAway {
+  background: linear-gradient(0deg, #c8002a 0%, #ff123f 100%);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.voteCountLeft,
+.voteCountRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.voteCountLeft {
+  left: 7px;
+}
+
+.voteCountRight {
+  right: 7px;
+}

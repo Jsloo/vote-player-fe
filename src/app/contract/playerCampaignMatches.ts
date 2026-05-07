@@ -86,6 +86,11 @@ export const PlayerCampaignMatchesEnvelopeSchema = publicEnvelopeSchema(
   PlayerMatchesByDateListSchema,
 );
 
+/** Flat list envelope for GET …/matches?date=… which returns PlayerMatchResponse[] directly. */
+export const PlayerMatchListEnvelopeSchema = publicEnvelopeSchema(
+  z.array(PlayerMatchResponseSchema),
+);
+
 /** GET …/matches/count-by-date — same `{ success, code, message, data }` envelope as other public APIs. */
 export const MatchCountByDateEnvelopeSchema = publicEnvelopeSchema(
   MatchCountByDateListSchema,
@@ -100,18 +105,22 @@ export function parseCampaignIdFromEnv(): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-export function selectLiveMatchesWithTwoTeams(
-  buckets: PlayerMatchesByDate[],
+export function selectDateMatchesWithTwoTeams(
+  matches: PlayerMatchResponse[],
 ): PlayerMatchResponse[] {
-  const out: PlayerMatchResponse[] = [];
-  for (const day of buckets) {
-    for (const m of day.matches) {
-      if (m.status === "LIVE" && m.teams?.length >= 2) {
-        out.push(m);
-      }
-    }
-  }
-  return out;
+  return matches.filter(
+    (m) =>
+      (m.status === 'UPCOMING' || m.status === 'LIVE') &&
+      m.teams?.length >= 2,
+  )
+}
+
+export function selectLiveMatchesWithTwoTeams(
+  matches: PlayerMatchResponse[],
+): PlayerMatchResponse[] {
+  return matches.filter(
+    (m) => m.status === 'LIVE' && m.teams?.length >= 2,
+  )
 }
 
 const c = initContract();
@@ -128,9 +137,9 @@ export const playerCampaignMatchesContract = c.router({
       date: z.string(),
     }),
     responses: {
-      200: PlayerCampaignMatchesEnvelopeSchema,
+      200: PlayerMatchListEnvelopeSchema,
     },
-    summary: "List campaign matches grouped by date",
+    summary: "List campaign matches for a given date",
   },
   getMatchesCountByDate: {
     method: "GET",

@@ -3,6 +3,7 @@ export const translationKey = {
   MATCH_ACTION_BAR_LABEL: 'matchActionBar.label',
   MATCH_ACTION_BAR_TICKET: 'matchActionBar.ticket',
   MATCH_ACTION_BAR_GET_TICKETS: 'matchActionBar.getTickets',
+  MATCH_BY_DATE_VOTE_NOW: 'matchByDate.voteNow',
 
   // Error 404 popup
   ERROR_404_TITLE: 'error404.title',

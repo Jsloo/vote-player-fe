@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   type PlayerMatchResponse,
   parseCampaignIdFromEnv,
+  selectDateMatchesWithTwoTeams,
   selectLiveMatchesWithTwoTeams,
   tsr,
 } from '@/app/contract'
@@ -14,6 +15,7 @@ import { CalendarStrip } from './CalendarStrip'
 import { LiveMatchCardCarousel } from './LiveMatchCardCarousel'
 import { MainHallSkeleton } from './MainHallSkeleton'
 import { MatchActionBar } from './MatchActionBar'
+import { MatchByDateCarousel } from './MatchByDateCarousel'
 
 const DEFAULT_SSE_EVENTS = ['message'] as const
 
@@ -27,21 +29,23 @@ function HomeHallContent() {
 
   const selectedDateStr = selectedMatchDate.format('YYYY-MM-DD')
 
-  const { data: liveMatches, isPending, isError, error } = tsr.getMatch.useQuery<
-    PlayerMatchResponse[]
-  >({
+  const { data: matchData, isPending, isError, error } = tsr.getMatch.useQuery({
     queryKey: ['getMatch', campaignId, selectedDateStr],
     queryData:
       campaignId !== null
         ? { params: { campaignId }, query: { date: selectedDateStr } }
         : skipToken,
-    select: (response) => {
-      if (response.status !== 200) {
-        return []
-      }
-      return selectLiveMatchesWithTwoTeams(response.body ?? [])
-    },
   })
+
+  const liveMatches: PlayerMatchResponse[] = useMemo(() => {
+    if (!matchData || matchData.status !== 200) return []
+    return selectLiveMatchesWithTwoTeams(matchData.body)
+  }, [matchData])
+
+  const dateMatches: PlayerMatchResponse[] = useMemo(() => {
+    if (!matchData || matchData.status !== 200) return []
+    return selectDateMatchesWithTwoTeams(matchData.body)
+  }, [matchData])
 
   useEffect(() => {
     if (import.meta.env.DEV && isError) {
@@ -66,8 +70,11 @@ function HomeHallContent() {
         selectedDate={selectedMatchDate}
         onSelectedDateChange={setSelectedMatchDateStable}
       />
-      {campaignId != null && (isPending || (liveMatches?.length ?? 0) > 0) ? (
-        <LiveMatchCardCarousel matches={liveMatches ?? []} isPending={isPending} />
+      {campaignId != null && (isPending || liveMatches.length > 0) ? (
+        <LiveMatchCardCarousel matches={liveMatches} isPending={isPending} />
+      ) : null}
+      {campaignId != null && (isPending || dateMatches.length > 0) ? (
+        <MatchByDateCarousel matches={dateMatches} isPending={isPending} />
       ) : null}
     </section>
   )

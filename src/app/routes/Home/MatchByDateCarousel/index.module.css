@@ -1,0 +1,50 @@
+.root {
+  width: 105%;
+  padding: 16px 0 8px;
+}
+
+/* ── Scrollable row — shows ~3 cards ── */
+.scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0;
+  margin-left: -12px;
+  box-sizing: border-box;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  /* Each card occupies just under 1/3 so the next card peeks slightly */
+  flex: 0 0 calc((100% - 16px) / 3);
+  aspect-ratio: 0.92;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+/* ── Loading skeleton ── */
+.placeholder {
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  margin-left: -6px;
+}
+
+.skeletonCard {
+  flex: 0 0 calc((100% - 16px) / 3);
+  aspect-ratio: 0.92;
+  border-radius: 12px;
+  background: linear-gradient(170deg, #caddf5 0%, #a8c4e8 100%);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
