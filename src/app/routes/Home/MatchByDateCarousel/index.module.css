@@ -23,7 +23,7 @@
 .item {
   /* Each card occupies just under 1/3 so the next card peeks slightly */
   flex: 0 0 calc((100% - 16px) / 3);
-  aspect-ratio: 0.92;
+  aspect-ratio: 0.96;
   scroll-snap-align: start;
   min-width: 0;
 }
@@ -38,7 +38,7 @@
 
 .skeletonCard {
   flex: 0 0 calc((100% - 16px) / 3);
-  aspect-ratio: 0.92;
+  aspect-ratio: 0.96;
   border-radius: 12px;
   background: linear-gradient(170deg, #caddf5 0%, #a8c4e8 100%);
   animation: pulse 1.4s ease-in-out infinite;
