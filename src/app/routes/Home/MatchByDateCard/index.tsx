@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import countryFrameMatch from '@/assets/image/country-frame-match.png'
 import voteButton from '@/assets/image/vote-button.png'
 import type { PlayerMatchResponse } from '@/app/contract'
+import { translateRemoteLabel } from '@/app/utils/translateRemoteLabel'
 import { translationKey } from '@/i18n/constants'
 import styles from './index.module.css'
 
@@ -25,7 +26,9 @@ export function MatchByDateCard({ match }: Props) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <span className={styles.headerStage}>{match.matchName}</span>
+        <span className={styles.headerStage}>
+          {translateRemoteLabel(t, match.matchName)}
+        </span>
         <span className={styles.headerTime}>{timeLabel}</span>
       </div>
 

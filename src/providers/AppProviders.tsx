@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
 import enUS from 'antd/locale/en_US'
+import msMY from 'antd/locale/ms_MY'
 import zhCN from 'antd/locale/zh_CN'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +14,9 @@ import { EventProvider } from '@/providers/EventProvider'
 const queryClient = new QueryClient()
 
 function antdLocaleFor(lng: string) {
-  return lng.startsWith('zh') ? zhCN : enUS
+  if (lng === 'ms' || lng.startsWith('ms')) return msMY
+  if (lng === 'zh-CN' || lng.startsWith('zh')) return zhCN
+  return enUS
 }
 
 function AntdConfigWithLocale({ children }: { children: ReactNode }) {

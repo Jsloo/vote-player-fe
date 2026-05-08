@@ -1,4 +1,5 @@
 import { DotLoading } from 'antd-mobile'
+import { useTranslation } from 'react-i18next'
 import liveMatchBg from '@/assets/image/live-match.png'
 import countryFrame from '@/assets/image/country-frame.png'
 import countryNameBg from '@/assets/image/country-name.png'
@@ -6,6 +7,7 @@ import deerMascot from '@/assets/image/deer-mascot.png'
 import birdMascot from '@/assets/image/bird-mascot.png'
 import type { PlayerMatchResponse } from '@/app/contract'
 import { formatMatchRibbonTime } from '@/app/utils/formatMatchRibbonTime'
+import { translateRemoteLabel } from '@/app/utils/translateRemoteLabel'
 import styles from './index.module.css'
 
 export type LiveMatchCardProps = {
@@ -16,6 +18,8 @@ export type LiveMatchCardProps = {
 }
 
 export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
+  const { t } = useTranslation()
+
   if (match === null) {
     if (!isLoading) {
       return null
@@ -102,9 +106,13 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
           </div>
 
           <div className={styles.bottomRibbonText}>
-            <span className={styles.matchName}>{match.matchName}</span>
+            <span className={styles.matchName}>
+              {translateRemoteLabel(t, match.matchName)}
+            </span>
             {match.titleName ? (
-              <span className={styles.titleName}>{match.titleName}</span>
+              <span className={styles.titleName}>
+                {translateRemoteLabel(t, match.titleName)}
+              </span>
             ) : null}
           </div>
           {match.status === 'LIVE' ? (
