@@ -7,7 +7,6 @@ import medal2 from "@/assets/image/silver.png";
 import medal3 from "@/assets/image/bronze.png";
 import mascotBorder from "@/assets/image/gold-border.png";
 
-// ── 后端返回的数据结构 ──
 export interface RankingEntry {
   playerId: number;
   username: string;
@@ -25,14 +24,14 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
   const { username, totalPoints, currentStreak, rank } = entry;
 
   const theme = getTheme(rank, isCurrentUser);
-  const showMascot = rank >= 1 && rank <= 3 && !isCurrentUser;
-  const useMedal = rank >= 1 && rank <= 3 && !isCurrentUser;
+  const showMascot = rank >= 1 && rank <= 3;
+  const useMedal = rank >= 1 && rank <= 3;
 
   const card: React.CSSProperties = {
     display: "flex",
     alignItems: "center",
     gap: 6,
-    padding: "4px 14px 4px 0",
+    padding: "4px 10px 4px 0",         // ← 右边 padding 14 → 10
     borderRadius: 14,
     background: theme.background,
     border: isCurrentUser ? "3px solid #facc15" : "none",
@@ -45,7 +44,6 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
     overflow: "hidden",
   };
 
-  // ── Rank 标签 ──
   const renderRank = () => {
     if (useMedal) return <Medal rank={rank} />;
     const label = rank === 0 ? "—" : `${rank}th`;
@@ -54,10 +52,10 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         background: "linear-gradient(180deg, #93c5fd, #3b82f6)",
         color: "white",
         fontWeight: 800,
-        fontSize: 14,
-        padding: "5px 0",            // ← 左右 0
+        fontSize: 13,                    // ← 14 → 13
+        padding: "5px 0",
         borderRadius: 12,
-        width: 60,                    // ← 固定宽度
+        width: 52,                        // ← 60 → 52
         textAlign: "center",
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.15)",
         flexShrink: 0,
@@ -71,11 +69,11 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
     <div style={card}>
       {renderRank()}
 
-      {/* 吉祥物头像（仅前3名） */}
+      {/* 吉祥物 */}
       {showMascot && (
         <div style={{
-          width: 40,                  // ← 从 40 → 50
-          height: 40,                 // ← 从 40 → 50
+          width: 36,                     // ← 40 → 36
+          height: 36,
           backgroundImage: `url(${mascotBorder})`,
           backgroundSize: "contain",
           backgroundPosition: "center",
@@ -89,8 +87,8 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
             src={rank === 1 ? leopardImg : eagleImg}
             alt="mascot"
             style={{
-              width: 48,                // ← 从 48 → 56
-              height: 48,
+              width: 42,                  // ← 48 → 42
+              height: 42,
               objectFit: "contain",
               borderRadius: "50%",
             }}
@@ -101,7 +99,7 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
       {/* 用户名 */}
       <div style={{
         flex: 1,
-        fontSize: 14,
+        fontSize: 13,                     // ← 14 → 13
         fontWeight: 700,
         color: theme.usernameColor,
         overflow: "hidden",
@@ -112,14 +110,15 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         {maskUsername(username)}
       </div>
 
-      {/* Streak 蓝色胶囊 — 固定宽度 */}
+      {/* Streak 胶囊 — 缩小 */}
       <div style={{
         background: "linear-gradient(180deg, #3b82f6, #1d4ed8)",
         color: "white",
         fontWeight: 800,
-        fontSize: 12,
-        borderRadius: 14,
-        width: 80,                    // ← 固定宽度
+        fontSize: 11,                     // ← 12 → 11
+        borderRadius: 12,                  // ← 14 → 12
+        width: 64,                         // ← 80 → 64
+        padding: "3px 0",                  // ← 加点上下 padding
         textAlign: "center",
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.2)",
         flexShrink: 0,
@@ -127,17 +126,16 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         Streak X{currentStreak || 1}
       </div>
 
-      {/* Point — 胶囊 + 上方 label，固定宽度 */}
+      {/* Point 胶囊 — 缩小 */}
       <div style={{
         position: "relative",
         flexShrink: 0,
         marginLeft: 4,
-        width: 90,                    // ← 固定宽度
+        width: 70,                         // ← 90 → 70
       }}>
-        {/* "Point" 标签浮在上方 */}
         <div style={{
           position: "absolute",
-          top: -15,
+          top: -13,                        // ← 略调
           left: "50%",
           transform: "translateX(-50%)",
           fontSize: 9,
@@ -148,20 +146,20 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
           Point
         </div>
 
-        {/* 蓝色胶囊 */}
         <div style={{
           background: "linear-gradient(180deg, #93c5fd, #3b82f6)",
-          borderRadius: 14,
+          borderRadius: 12,                // ← 14 → 12
+          padding: "3px 0",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",    // ← 内容居中
-          gap: 4,
+          justifyContent: "center",
+          gap: 3,                           // ← 4 → 3
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.15)",
           width: "100%",
         }}>
           <CoinIcon />
           <span style={{
-            fontSize: 13,
+            fontSize: 12,                   // ← 13 → 12
             fontWeight: 800,
             color: "white",
           }}>
@@ -173,7 +171,6 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
   );
 }
 
-// ── 奖牌组件（用图片）──
 function Medal({ rank }: { rank: number }) {
   const medalImages: Record<number, string> = { 1: medal1, 2: medal2, 3: medal3 };
   return (
@@ -181,22 +178,21 @@ function Medal({ rank }: { rank: number }) {
       src={medalImages[rank]}
       alt={`Rank ${rank}`}
       style={{
-        width: 80,                  // 放大
-        height: 100,                 // 比卡片高
+        width: 70,                         // ← 80 → 70
+        height: 90,                         // ← 100 → 90
         objectFit: "contain",
         flexShrink: 0,
-        margin: "-40px -20px -40px -10px",
+        margin: "-30px -16px -30px -8px",  // ← 调小 margin
       }}
     />
   );
 }
 
-// ── 金币图标 ──
 function CoinIcon() {
   return (
     <div style={{
-      width: 18,
-      height: 18,
+      width: 16,                            // ← 18 → 16
+      height: 16,
       borderRadius: "50%",
       background: "radial-gradient(circle at 30% 30%, #fde68a, #f59e0b 70%, #b45309)",
       boxShadow: "inset 0 -2px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.2)",
@@ -205,7 +201,6 @@ function CoinIcon() {
   );
 }
 
-// ── username 加掩码 ──
 function maskUsername(username: string): string {
   if (username.length <= 4) return username;
   const start = username.slice(0, 2);
@@ -213,16 +208,7 @@ function maskUsername(username: string): string {
   return `${start}**${end}`;
 }
 
-// ── 主题（卡片背景色 + 文字色） ──
 function getTheme(rank: number, isCurrentUser?: boolean) {
-  if (isCurrentUser) {
-    return {
-      background: "white",
-      usernameColor: "#1e3a8a",
-      pointLabelColor: "#3b82f6",
-      pointValueColor: "#1e3a8a",
-    };
-  }
   if (rank === 1) {
     return {
       background: "linear-gradient(180deg, #fef3c7, #fbbf24)",
@@ -247,7 +233,14 @@ function getTheme(rank: number, isCurrentUser?: boolean) {
       pointValueColor: "#7c2d12",
     };
   }
-  // rank 4+ 或 rank 0 — 白色背景
+  if (isCurrentUser) {
+    return {
+      background: "white",
+      usernameColor: "#1e3a8a",
+      pointLabelColor: "#3b82f6",
+      pointValueColor: "#1e3a8a",
+    };
+  }
   return {
     background: "white",
     usernameColor: "#1e40af",

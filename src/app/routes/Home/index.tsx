@@ -100,7 +100,7 @@ function HomeHallContent() {
         secondTeam: { name : teamTwo.teamName, flagUrl: teamTwo.teamLogo },
         votedTeam: selectedTeam ? 'first' : 'second',
         result: item.status,
-        based: 100, //TODO : need confirm what is the based
+        based: item.basePoints,
         strike: item.multiplier,
         total: item.pointsEarned,
       }
