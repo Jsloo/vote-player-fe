@@ -29,6 +29,22 @@ import {
   selectLiveMatchesWithTwoTeams,
 } from "./playerCampaignMatches";
 import { playerSessionContract } from "./playerSession";
+import {
+  PlayerVoteHistoryResponseSchema,
+  playerVoteHistoryContract
+} from "./playerVoteHistory";
+
+import {
+  LeaderboardPageResponseSchema,
+  LeaderboardResponseSchema,
+  playerLeaderboardContract,
+} from "./playerLeaderboard";
+
+
+export type {
+  LeaderboardResponse,
+  LeaderboardPageResponse,
+} from "./playerLeaderboard";
 
 export type {
   MatchCountByDate,
@@ -39,6 +55,10 @@ export type {
   TicketBalance,
   TeamResponse,
 } from "./playerCampaignMatches";
+
+export type {
+  PlayerVoteHistoryResponse
+} from "./playerVoteHistory";
 
 export {
   MatchCountByDateEnvelopeSchema,
@@ -59,6 +79,10 @@ export {
   selectDateMatchesWithTwoTeams,
   selectLiveMatchesWithTwoTeams,
   PlayerMatchListEnvelopeSchema,
+  PlayerVoteHistoryResponseSchema,
+  LeaderboardPageResponseSchema,
+  LeaderboardResponseSchema,
+  playerLeaderboardContract,
 };
 
 async function appendPlayerPublicQuery(path: string) {
@@ -97,6 +121,8 @@ const contractRoot = initContract();
 export const publicContract = contractRoot.router({
   ...playerCampaignMatchesContract,
   ...playerSessionContract,
+  ...playerVoteHistoryContract,
+  ...playerLeaderboardContract,
 });
 
 export const tsr = initTsrReactQuery(publicContract, {
