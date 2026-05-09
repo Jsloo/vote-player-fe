@@ -65,6 +65,10 @@ export default function LeaderboardPanel({
     zIndex: 10,
     background: "linear-gradient(180deg, #3b9bdc 0%, #3b9bdc 100%)",
     paddingBottom: 6,
+    marginLeft: -10,         // ← 左边溢出 10px
+    marginRight: -10,        // ← 右边溢出 10px
+    paddingLeft: 10,         // ← 内部留出空间
+    paddingRight: 10,
   };
 
   return (

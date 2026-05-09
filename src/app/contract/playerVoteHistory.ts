@@ -22,9 +22,10 @@ export const PlayerVoteHistoryResponseSchema = z.object({
   votedTeamId: z.number(),
   votedTeamName: z.string(),
   votedTeamLogo: z.string(),
-  pointsEarned: z.coerce.number().nullable(),       // ← 加 .nullable()
+  pointsEarned: z.coerce.number().nullable(),
   multiplier: z.coerce.number().nullable(),
   status: VoteStatusSchema.nullable(),
+  basePoints: z.coerce.number().nullable(),
   teams: z.array(TeamInfoSchema),
   winnerTeamId: z.number().nullable(),
 })
