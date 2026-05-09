@@ -52,12 +52,19 @@ export const MatchCountByDateSchema = z.object({
 
 export const MatchCountByDateListSchema = z.array(MatchCountByDateSchema);
 
+export const TicketBalanceSchema = z.object({
+  ticketBalance: z.number(),
+  promoTicketBalance: z.number(),
+  totalTicketBalance: z.number(),
+});
+
 export type MatchStatus = z.infer<typeof MatchStatusSchema>;
 export type TeamResponse = z.infer<typeof TeamResponseSchema>;
 export type MatchTeamResponse = z.infer<typeof MatchTeamResponseSchema>;
 export type PlayerMatchResponse = z.infer<typeof PlayerMatchResponseSchema>;
 export type PlayerMatchesByDate = z.infer<typeof PlayerMatchesByDateSchema>;
 export type MatchCountByDate = z.infer<typeof MatchCountByDateSchema>;
+export type TicketBalance = z.infer<typeof TicketBalanceSchema>;
 
 /** Shared public API envelope: session invalid + success flag, then unwrap `data`. */
 export function publicEnvelopeSchema<T extends z.ZodTypeAny>(dataSchema: T) {
@@ -94,6 +101,11 @@ export const PlayerMatchListEnvelopeSchema = publicEnvelopeSchema(
 /** GET …/matches/count-by-date — same `{ success, code, message, data }` envelope as other public APIs. */
 export const MatchCountByDateEnvelopeSchema = publicEnvelopeSchema(
   MatchCountByDateListSchema,
+);
+
+/** GET …/ticket — same `{ success, code, message, data }` envelope as other public APIs. */
+export const TicketBalanceEnvelopeSchema = publicEnvelopeSchema(
+  TicketBalanceSchema,
 );
 
 export function parseCampaignIdFromEnv(): number | null {
@@ -151,5 +163,16 @@ export const playerCampaignMatchesContract = c.router({
       200: MatchCountByDateEnvelopeSchema,
     },
     summary: "Match counts per date for campaign calendar",
+  },
+  getTicket: {
+    method: "GET",
+    path: "/player/campaigns/:campaignId/ticket",
+    pathParams: z.object({
+      campaignId: z.coerce.number(),
+    }),
+    responses: {
+      200: TicketBalanceEnvelopeSchema,
+    },
+    summary: "Ticket balances for campaign",
   },
 });

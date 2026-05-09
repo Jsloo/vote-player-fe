@@ -4,7 +4,7 @@ import ticketIcon from "@/assets/svg/ticket.svg";
 import { translationKey } from "@/i18n/constants";
 import "./styles.css";
 
-export function MatchActionBar() {
+export function MatchActionBar({ totalTicketBalance }: { totalTicketBalance: number }) {
   const { t } = useTranslation();
 
   return (
@@ -21,7 +21,7 @@ export function MatchActionBar() {
             {t(translationKey.MATCH_ACTION_BAR_TICKET, { defaultValue: 'Ticket' })}
           </span>
           <Badge
-            count={1200}
+            count={totalTicketBalance}
             showZero
             className="matchActionBarTicketBadge"
             styles={{

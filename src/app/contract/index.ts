@@ -20,6 +20,8 @@ import {
   PlayerMatchResponseSchema,
   PlayerMatchesByDateListSchema,
   PlayerMatchesByDateSchema,
+  TicketBalanceEnvelopeSchema,
+  TicketBalanceSchema,
   TeamResponseSchema,
   parseCampaignIdFromEnv,
   playerCampaignMatchesContract,
@@ -34,6 +36,7 @@ export type {
   MatchTeamResponse,
   PlayerMatchResponse,
   PlayerMatchesByDate,
+  TicketBalance,
   TeamResponse,
 } from "./playerCampaignMatches";
 
@@ -47,6 +50,8 @@ export {
   PlayerMatchResponseSchema,
   PlayerMatchesByDateListSchema,
   PlayerMatchesByDateSchema,
+  TicketBalanceEnvelopeSchema,
+  TicketBalanceSchema,
   TeamResponseSchema,
   parseCampaignIdFromEnv,
   playerCampaignMatchesContract,

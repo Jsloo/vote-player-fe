@@ -37,6 +37,16 @@ function HomeHallContent() {
         : skipToken,
   })
 
+  const { data: ticketData } = tsr.getTicket.useQuery({
+    queryKey: ['getTicket', campaignId],
+    queryData: campaignId !== null ? { params: { campaignId } } : skipToken,
+  })
+
+  const totalTicketBalance = useMemo(() => {
+    if (!ticketData || ticketData.status !== 200) return 0
+    return ticketData.body.totalTicketBalance
+  }, [ticketData])
+
   const liveMatches: PlayerMatchResponse[] = useMemo(() => {
     if (!matchData || matchData.status !== 200) return []
     return selectLiveMatchesWithTwoTeams(matchData.body)
@@ -64,7 +74,7 @@ function HomeHallContent() {
   return (
     <section aria-label="Promotional banner">
       <Banner />
-      <MatchActionBar />
+      <MatchActionBar totalTicketBalance={totalTicketBalance} />
       <CalendarStrip
         campaignId={campaignId}
         selectedDate={selectedMatchDate}
