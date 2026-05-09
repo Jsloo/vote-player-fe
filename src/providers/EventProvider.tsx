@@ -8,9 +8,11 @@ import {
   type ReactNode,
 } from 'react'
 import { useLocation } from 'react-router'
+import { ErrorCode } from '@/app/constant/errorCode'
 import { shouldShowMissingEntryGate } from '@/app/utils/bootstrap'
 import { buildSseConnectUrl } from '@/app/utils/buildSseConnectUrl'
-import { SESSION_CHANGED_EVENT } from '@/app/utils/sessionTools'
+import { notifyAuthError } from '@/app/utils/sessionHandler'
+import { clearSession, SESSION_CHANGED_EVENT } from '@/app/utils/sessionTools'
 
 export type SsePayload = { data: string; eventType: string }
 
@@ -29,6 +31,10 @@ export type EventContextValue = {
 
 const EventContext = createContext<EventContextValue | null>(null)
 
+type SseEnvelope = {
+  code?: string
+}
+
 export function EventProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
   const subsRef = useRef<Map<number, Subscription>>(new Map())
@@ -37,8 +43,48 @@ export function EventProvider({ children }: { children: ReactNode }) {
   const urlRef = useRef<string | null>(null)
   const attachedTypesRef = useRef(new Set<string>())
   const connectingSeqRef = useRef(0)
+  const checkingInvalidSessionRef = useRef(false)
+
+  const triggerSessionInvalid = useCallback(() => {
+    notifyAuthError(ErrorCode.SESSION_INVALID)
+    clearSession()
+  }, [])
+
+  const parseSseEnvelope = useCallback((data: string): SseEnvelope | null => {
+    try {
+      return JSON.parse(data) as SseEnvelope
+    } catch {
+      return null
+    }
+  }, [])
+
+  const handleSsePayloadAuthError = useCallback((data: string) => {
+    const payload = parseSseEnvelope(data)
+    if (payload?.code === ErrorCode.SESSION_INVALID) {
+      triggerSessionInvalid()
+    }
+  }, [parseSseEnvelope, triggerSessionInvalid])
+
+  const probeSseConnectAuthError = useCallback(async (url: string) => {
+    if (checkingInvalidSessionRef.current) return
+    checkingInvalidSessionRef.current = true
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        const payload = (await response.json()) as SseEnvelope
+        if (payload.code === ErrorCode.SESSION_INVALID) {
+          triggerSessionInvalid()
+        }
+      }
+    } catch {
+      // Best-effort check only; ignore transport/parsing errors.
+    } finally {
+      checkingInvalidSessionRef.current = false
+    }
+  }, [triggerSessionInvalid])
 
   const deliver = useCallback((eventType: string, data: string) => {
+    handleSsePayloadAuthError(data)
     subsRef.current.forEach((sub) => {
       if (sub.eventTypes.has('*') || sub.eventTypes.has(eventType)) {
         try {
@@ -48,7 +94,7 @@ export function EventProvider({ children }: { children: ReactNode }) {
         }
       }
     })
-  }, [])
+  }, [handleSsePayloadAuthError])
 
   const disconnect = useCallback(() => {
     esRef.current?.close()
@@ -119,8 +165,11 @@ export function EventProvider({ children }: { children: ReactNode }) {
     const es = new EventSource(url)
     esRef.current = es
     urlRef.current = url
+    es.onerror = () => {
+      void probeSseConnectAuthError(url)
+    }
     wireTypes(es, types)
-  }, [pathname, collectEventTypes, disconnect, wireTypes])
+  }, [pathname, collectEventTypes, disconnect, wireTypes, probeSseConnectAuthError])
 
   useEffect(() => {
     void syncConnection()
