@@ -16,12 +16,17 @@ import { LiveMatchCardCarousel } from './LiveMatchCardCarousel'
 import { MainHallSkeleton } from './MainHallSkeleton'
 import { MatchActionBar } from './MatchActionBar'
 import { MatchByDateCarousel } from './MatchByDateCarousel'
+import MatchVotePopup ,{ type MatchVoteData } from "@/app/routes/Home/VotePopUp/VoteTicket.tsx"
+import { type RankingEntry } from "@/app/routes/Home/Leaderboard/LeaderboardCard.tsx"
+import LeaderboardPanel from "@/app/routes/Home/Leaderboard/LeaderboardPanel.tsx"
+import { type MatchHistoryEntry } from "@/app/routes/Home/History/HistoryCard.tsx"
 
 const DEFAULT_SSE_EVENTS = ['message'] as const
 
 function HomeHallContent() {
   const campaignId = useMemo(() => parseCampaignIdFromEnv(), [])
   const [selectedMatchDate, setSelectedMatchDate] = useState<Dayjs>(() => dayjs())
+  const [voteMatch, setVoteMatch] = useState<MatchVoteData | null>(null)
 
   const setSelectedMatchDateStable = useCallback((d: Dayjs) => {
     setSelectedMatchDate(d)
@@ -47,6 +52,28 @@ function HomeHallContent() {
     return ticketData.body.totalTicketBalance
   }, [ticketData])
 
+  const { data: voteHistoryData } = tsr.getVoteHistory.useQuery({
+    queryKey: ['voteHistory', campaignId],
+    queryData:
+      campaignId !== null ? { params: { campaignId } } : skipToken,
+  })
+
+  const { data: leaderboardData } = tsr.getLeaderboard.useQuery({
+    queryKey: ['leaderboard', campaignId],
+    queryData:
+      campaignId !== null ? { params: { campaignId } } : skipToken,
+  })
+
+  const leaderboardCurrentUser: RankingEntry | null = useMemo(() => {
+    if (!leaderboardData || leaderboardData.status !== 200) return null
+    return leaderboardData.body.currentUser ?? null
+  }, [leaderboardData])
+
+  const leaderboardTopRankings: RankingEntry[] = useMemo(() => {
+    if (!leaderboardData || leaderboardData.status !== 200) return []
+    return leaderboardData.body.topRankings
+  }, [leaderboardData])
+
   const liveMatches: PlayerMatchResponse[] = useMemo(() => {
     if (!matchData || matchData.status !== 200) return []
     return selectLiveMatchesWithTwoTeams(matchData.body)
@@ -56,6 +83,29 @@ function HomeHallContent() {
     if (!matchData || matchData.status !== 200) return []
     return selectDateMatchesWithTwoTeams(matchData.body)
   }, [matchData])
+
+  const historyEntries : MatchHistoryEntry[] = useMemo(() => {
+    if(!voteHistoryData || voteHistoryData.status !== 200) return []
+
+    return voteHistoryData.body.map((item) => {
+      const teamOne = item.teams[0]
+      const teamTwo = item.teams[1]
+      const selectedTeam = item.votedTeamId === teamOne?.teamId
+
+      return {
+        matchId: item.matchId,
+        matchName: item.matchName,
+        matchTitle: item.matchTitle,
+        firstTeam: { name : teamOne.teamName, flagUrl: teamOne.teamLogo },
+        secondTeam: { name : teamTwo.teamName, flagUrl: teamTwo.teamLogo },
+        votedTeam: selectedTeam ? 'first' : 'second',
+        result: item.status,
+        based: 100, //TODO : need confirm what is the based
+        strike: item.multiplier,
+        total: item.pointsEarned,
+      }
+    })
+  },[voteHistoryData])
 
   useEffect(() => {
     if (import.meta.env.DEV && isError) {
@@ -71,6 +121,53 @@ function HomeHallContent() {
 
   useSubscribe(onSse, [...DEFAULT_SSE_EVENTS])
 
+  const handleVoteClick = (match: PlayerMatchResponse) => {
+    const firstTeam = match.teams[0]
+    const secondTeam = match.teams[1]
+    if(!firstTeam || !secondTeam) return
+
+    setVoteMatch({
+      matchId: match.id,
+      matchName: match.matchName,
+      matchTime: match.matchTime,
+      firstTeam: {
+        teamId : firstTeam.team.id,
+        name: firstTeam.team.name,
+        flagUrl: firstTeam.team.logoUrl,
+      },
+      secondTeam: {
+        teamId: secondTeam.team.id,
+        name: secondTeam.team.name,
+        flagUrl: secondTeam.team.logoUrl,
+      },
+    })
+
+  }
+
+  // ── Vote mutation ──
+  const voteMutation = tsr.voteTeam.useMutation({
+    onSuccess: () => {
+      console.log('Vote successful!')
+      // 投票成功，可以让 popup 显示成功状态（你的 popup 已经有这个）
+      // 也可以刷新比赛数据看新的投票结果
+    },
+    onError: (error) => {
+      console.error('Vote failed:', error)
+    },
+  })
+
+  const handleConfirm = (matchId: number, selectedTeam: 'first' | 'second') => {
+    console.log('voted', matchId, selectedTeam)
+    if (!campaignId || !voteMatch) return
+
+    const teamId = selectedTeam==="first" ? voteMatch.firstTeam.teamId : voteMatch.secondTeam.teamId
+
+    voteMutation.mutate({
+      params: {campaignId, matchId},
+      body: {teamId}
+    })
+  }
+
   return (
     <section aria-label="Promotional banner">
       <Banner />
@@ -84,8 +181,23 @@ function HomeHallContent() {
         <LiveMatchCardCarousel matches={liveMatches} isPending={isPending} />
       ) : null}
       {campaignId != null && (isPending || dateMatches.length > 0) ? (
-        <MatchByDateCarousel matches={dateMatches} isPending={isPending} />
+        <MatchByDateCarousel matches={dateMatches} isPending={isPending} onVoteClick={handleVoteClick} />
       ) : null}
+
+      {voteMatch && (
+        <MatchVotePopup
+          match={voteMatch}
+          onConfirm={handleConfirm}
+          onBack={() => setVoteMatch(null)}
+        />
+      )}
+
+      <LeaderboardPanel
+        currentUser={leaderboardCurrentUser ?? null}
+        topRankings={leaderboardTopRankings}
+        history={historyEntries}
+      />
+
     </section>
   )
 }

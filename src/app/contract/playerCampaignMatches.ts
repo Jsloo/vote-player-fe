@@ -38,6 +38,10 @@ export const PlayerMatchResponseSchema = z.object({
   draw: z.boolean(),
 });
 
+export const PlayerVoteRequestSchema = z.object({
+  teamId: z.number(),
+})
+
 export const PlayerMatchesByDateSchema = z.object({
   date: z.string(),
   matches: z.array(PlayerMatchResponseSchema),
@@ -174,5 +178,18 @@ export const playerCampaignMatchesContract = c.router({
       200: TicketBalanceEnvelopeSchema,
     },
     summary: "Ticket balances for campaign",
+  },
+  voteTeam: {
+    method: "POST",
+    path: "/player/campaigns/:campaignId/matches/:matchId/vote",
+    pathParams: z.object({
+      campaignId: z.coerce.number(),
+      matchId: z.coerce.number(),
+    }),
+    body: PlayerVoteRequestSchema,
+    responses: {
+      200: z.unknown(),
+    },
+    summary: "Vote for a team in match",
   },
 });

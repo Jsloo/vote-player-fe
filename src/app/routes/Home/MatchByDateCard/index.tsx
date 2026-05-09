@@ -3,15 +3,15 @@ import { useTranslation } from 'react-i18next'
 import countryFrameMatch from '@/assets/image/country-frame-match.png'
 import voteButton from '@/assets/image/vote-button.png'
 import type { PlayerMatchResponse } from '@/app/contract'
-import { translateRemoteLabel } from '@/app/utils/translateRemoteLabel'
 import { translationKey } from '@/i18n/constants'
 import styles from './index.module.css'
 
 type Props = {
   match: PlayerMatchResponse
+  onVoteClick: (match: PlayerMatchResponse) => void
 }
 
-export function MatchByDateCard({ match }: Props) {
+export function MatchByDateCard({ match,onVoteClick }: Props) {
   const { t } = useTranslation()
   const home = match.teams[0]
   const away = match.teams[1]
@@ -26,9 +26,7 @@ export function MatchByDateCard({ match }: Props) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <span className={styles.headerStage}>
-          {translateRemoteLabel(t, match.matchName)}
-        </span>
+        <span className={styles.headerStage}>{match.matchName}</span>
         <span className={styles.headerTime}>{timeLabel}</span>
       </div>
 
@@ -61,6 +59,7 @@ export function MatchByDateCard({ match }: Props) {
 
       <button
         type="button"
+        onClick ={() => onVoteClick(match)}
         className={styles.voteBtn}
         aria-label={t(translationKey.MATCH_BY_DATE_VOTE_NOW, {
           defaultValue: 'Vote Now',

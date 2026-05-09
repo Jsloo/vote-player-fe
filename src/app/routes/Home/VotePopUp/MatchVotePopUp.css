@@ -1,0 +1,207 @@
+.mvp-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+}
+
+.mvp-card {
+    width: 360px;           /* 固定宽度，不用 100% */
+    height: 560px;          /* 固定高度，不用 aspect-ratio */
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    animation: mvp-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes mvp-pop {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.mvp-back-btn {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.15s;
+}
+.mvp-back-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.mvp-banner-text {
+    text-align: center;
+    padding: 14px 16px 0;
+}
+
+.mvp-banner-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.mvp-banner-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 11px;
+    margin-top: 3px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.mvp-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px 16px 20px;
+}
+
+.mvp-ticket {
+    border-radius: 20px;
+    padding: 16px;
+    color: white;
+}
+
+.mvp-match-info {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.mvp-stage {
+    font-size: 15px;
+    font-weight: 700;
+    color: #93c5fd;
+}
+
+.mvp-time {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 2px;
+}
+
+.mvp-teams {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.mvp-team {
+    flex: 1;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.12s;
+}
+.mvp-team:active {
+    transform: scale(0.96);
+}
+
+.mvp-team-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.4px;
+}
+
+.mvp-flag-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: white;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mvp-team--selected .mvp-flag-circle {
+    border-color: #facc15;
+    box-shadow: 0 0 0 2px #facc15, 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.mvp-flag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.mvp-team-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.mvp-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.mvp-checkbox--checked {
+    background: #ef4444;
+    border-color: #ef4444;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-6' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+}
+
+.mvp-vs {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.75);
+    flex-shrink: 0;
+}
+
+.mvp-confirm-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 40px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    background: #ccc5b5;
+    color: #8a7f70;
+    cursor: not-allowed;
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.mvp-confirm-btn--active {
+    background: #facc15;
+    color: #1a1400;
+    cursor: pointer;
+}
+.mvp-confirm-btn--active:hover { background: #f5c000; }
+.mvp-confirm-btn--active:active { transform: scale(0.98); }

@@ -5,9 +5,10 @@ import styles from './index.module.css'
 type Props = {
   matches: PlayerMatchResponse[]
   isPending: boolean
+  onVoteClick: (match: PlayerMatchResponse) => void
 }
 
-export function MatchByDateCarousel({ matches, isPending }: Props) {
+export function MatchByDateCarousel({ matches, isPending, onVoteClick }: Props) {
   if (!isPending && matches.length === 0) {
     return null
   }
@@ -24,7 +25,7 @@ export function MatchByDateCarousel({ matches, isPending }: Props) {
         <div className={styles.scroll}>
           {matches.map((match) => (
             <div key={match.id} className={styles.item}>
-              <MatchByDateCard match={match} />
+              <MatchByDateCard match={match} onVoteClick={onVoteClick}/>
             </div>
           ))}
         </div>
