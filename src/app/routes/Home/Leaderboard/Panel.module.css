@@ -1,0 +1,74 @@
+/* Leaderboard/Panel.module.css */
+
+.root {
+    padding: 12px;
+}
+
+/* ── Tabs ── */
+.tabsWrap {
+    display: flex;
+    gap: 4px;
+    padding-left: 8px;
+    position: relative;
+    z-index: 2;
+}
+
+.tabBtn {
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    background: rgba(180, 210, 235, 0.7);
+    color: #5a8aac;
+}
+
+.tabBtnActive {
+    background: #3b9bdc;
+    color: white;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: -2px;
+}
+
+/* ── Panel ── */
+.panel {
+    background: linear-gradient(180deg, #3b9bdc 0%, #2581c2 100%);
+    border-radius: 0 18px 18px 18px;
+    padding: 12px 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Scroll area ── */
+.scrollArea {
+    overflow-y: auto;
+    display: block;
+    width: 100%;
+    overscroll-behavior: contain;
+}
+
+/* ── Sticky wrapper for current user ── */
+.stickyWrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(180deg, #3b9bdc 0%, #3b9bdc 100%);
+    padding-bottom: 6px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* ── List item spacing ── */
+.itemRow {
+    margin-bottom: 6px;
+}
+
+/* ── Empty state ── */
+.empty {
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
