@@ -4,6 +4,7 @@ import eagleImg from "@/assets/image/eagle-avatar.png";
 import medal1 from "@/assets/image/gold.png";
 import medal2 from "@/assets/image/silver.png";
 import medal3 from "@/assets/image/bronze.png";
+import coinImg from "@/assets/image/coin.png";
 import mascotBorder from "@/assets/image/gold-border.png";
 import styles from "./index.module.css";
 
@@ -27,6 +28,7 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
       bg: styles.themeRank1,
       username: styles.usernameRank1,
       pointLabel: styles.pointLabelRank1,
+      pointPill: styles.pointPillRank1,
     };
   }
   if (rank === 2) {
@@ -34,6 +36,7 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
       bg: styles.themeRank2,
       username: styles.usernameRank2,
       pointLabel: styles.pointLabelRank2,
+      pointPill: styles.pointPillRank2,
     };
   }
   if (rank === 3) {
@@ -41,6 +44,7 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
       bg: styles.themeRank3,
       username: styles.usernameRank3,
       pointLabel: styles.pointLabelRank3,
+      pointPill: styles.pointPillRank3,
     };
   }
   if (isCurrentUser) {
@@ -48,13 +52,21 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
       bg: styles.themeDefault,
       username: styles.usernameCurrentUser,
       pointLabel: styles.pointLabelCurrentUser,
+      pointPill: styles.pointPillCurrentUser,
     };
   }
   return {
     bg: styles.themeDefault,
     username: styles.usernameDefault,
     pointLabel: styles.pointLabelDefault,
+    pointPill: styles.pointPillDefault,
   };
+}
+
+function formatPoints(n: number): string {
+  if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + 'B';
+  if (n >= 1_000_000)     return (n / 1_000_000).toFixed(1) + 'M';
+  return n.toLocaleString();
 }
 
 export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCardProps) {
@@ -105,7 +117,7 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         <div className={`${styles.pointLabel} ${theme.pointLabel}`}>Point</div>
         <div className={styles.pointPill}>
           <CoinIcon />
-          <span className={styles.pointValue}>{totalPoints.toLocaleString()}</span>
+          <span className={styles.pointValue}>{formatPoints(totalPoints)}</span>
         </div>
       </div>
     </div>
@@ -124,7 +136,7 @@ function Medal({ rank }: { rank: number }) {
 }
 
 function CoinIcon() {
-  return <div className={styles.coin} />;
+  return <img src={coinImg} alt="coin" className={styles.coin} />;
 }
 
 function maskUsername(username: string): string {

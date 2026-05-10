@@ -22,6 +22,8 @@ export default function LeaderboardPanel({
   const ITEM_HEIGHT = 56;
   const innerMaxHeight = ITEM_HEIGHT * (visibleCount + 1);
 
+  const hasLeaderboardData = !!currentUser || topRankings.length > 0;
+
   return (
     <div className={styles.root}>
       <div className={styles.tabsWrap}>
@@ -42,16 +44,22 @@ export default function LeaderboardPanel({
       <div className={styles.panel}>
         {tab === "leaderboard" ? (
           <div className={styles.scrollArea} style={{ maxHeight: innerMaxHeight }}>
-            {currentUser && (
-              <div className={styles.stickyWrap}>
-                <LeaderboardCard entry={currentUser} isCurrentUser />
-              </div>
+            {!hasLeaderboardData ? (
+                <div className={styles.empty}>No leaderboard yet</div>
+            ):(
+              <>
+                {currentUser && (
+                  <div className={styles.stickyWrap}>
+                    <LeaderboardCard entry={currentUser} isCurrentUser />
+                  </div>
+                )}
+                {topRankings.map((entry) => (
+                  <div key={entry.playerId} className={styles.itemRow}>
+                    <LeaderboardCard entry={entry} />
+                  </div>
+                ))}
+              </>
             )}
-            {topRankings.map((entry) => (
-              <div key={entry.playerId} className={styles.itemRow}>
-                <LeaderboardCard entry={entry} />
-              </div>
-            ))}
           </div>
         ) : (
           <div className={styles.scrollArea} style={{ maxHeight: innerMaxHeight }}>
