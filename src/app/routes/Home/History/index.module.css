@@ -1,0 +1,153 @@
+/* History/index.module.css */
+
+.card {
+    background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 100%);
+    border-radius: 16px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* ── 左侧：国旗 + VS ── */
+.leftSide {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-right: 6px;
+}
+
+.teamCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.teamName {
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.vs {
+    font-size: 13px;
+    font-weight: 900;
+    color: #dc2626;
+    margin: 0 4px;
+    margin-top: -10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    font-style: italic;
+}
+
+/* ── 国旗 ── */
+.flagWrap {
+    position: relative;
+}
+
+.flagBorder {
+    width: 36px;
+    height: 36px;
+    background-image: var(--flag-border-bg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flagImg {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: auto;
+    transform: rotate(15deg);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ── 右侧：数据行 ── */
+.rightSide {
+    flex: 1;
+    min-width: 0;
+    padding-left: 8px;
+}
+
+.statsRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+}
+
+.result {
+    font-size: 11px;
+    font-weight: 900;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    padding-bottom: 10px;
+}
+
+.resultWin    { color: #facc15; }
+.resultLoss   { color: #ef4444; }
+.resultPending { color: #9ca3af; }
+.resultDraw   { color: #94a3b8; }
+
+/* ── Stat 胶囊 ── */
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+.statPill {
+    background: linear-gradient(180deg, #dbeafe, #93c5fd);
+    border-radius: 8px;
+    padding: 1px 6px;
+    min-width: 26px;
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.statPillHighlight {
+    background: linear-gradient(180deg, #fde047, #facc15);
+}
+
+.statValue {
+    font-size: 11px;
+    font-weight: 900;
+    color: #1e3a8a;
+}
+
+.statValueHighlight {
+    color: #7c2d12;
+}
+
+.statLabel {
+    font-size: 8px;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+/* ── 运算符 ── */
+.operator {
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.8);
+    padding-bottom: 10px;
+}
