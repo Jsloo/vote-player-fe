@@ -1,46 +1,86 @@
 /* History/index.module.css */
 
+.cardWrap {
+    position: relative;
+    width: 100%;
+    padding-top: 18px;
+}
+
 .card {
-    background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 100%);
-    border-radius: 16px;
-    padding: 8px 10px;
+    background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
+    border-radius: 20px;
+    padding: 15px 5px 0px;
+    min-height: 52px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    gap: 5px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
     color: white;
     width: 100%;
     box-sizing: border-box;
     position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.35);
 }
 
-/* ── 左侧：国旗 + VS ── */
+/* ── Banner ── */
+.banner {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 70%;
+    max-width: 280px;
+    height: 100px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 31px;
+    box-sizing: border-box;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.bannerText {
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ── 左侧 ── */
 .leftSide {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    padding-right: 6px;
+    padding-right: 2px;
 }
 
 .teamCol {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
 }
 
 .teamName {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
+    color: #1e40af;
 }
 
 .vs {
     font-size: 13px;
     font-weight: 900;
-    color: #dc2626;
-    margin: 0 4px;
+    color: #1e40af;
+    margin: 0 3px;
     margin-top: -10px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
     z-index: 3;
     font-style: italic;
 }
@@ -51,9 +91,8 @@
 }
 
 .flagBorder {
-    width: 36px;
-    height: 36px;
-    background-image: var(--flag-border-bg);
+    width: 34px;
+    height: 34px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -63,8 +102,8 @@
 }
 
 .flagImg {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -80,11 +119,11 @@
     z-index: 5;
 }
 
-/* ── 右侧：数据行 ── */
+/* ── 右侧 ── */
 .rightSide {
-    flex: 1;
-    min-width: 0;
-    padding-left: 8px;
+    flex: 0 1 auto;
+    min-width: 0;                        /* 关键：允许收缩 */
+    padding-left: 2px;
 }
 
 .statsRow {
@@ -92,62 +131,71 @@
     align-items: center;
     justify-content: flex-end;
     gap: 3px;
+    flex-wrap: nowrap;
 }
 
 .result {
     font-size: 11px;
-    font-weight: 900;
+    font-weight: 700;
     white-space: nowrap;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    padding-bottom: 10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+    margin-right: 1px;
 }
 
 .resultWin    { color: #facc15; }
 .resultLoss   { color: #ef4444; }
-.resultPending { color: #9ca3af; }
-.resultDraw   { color: #94a3b8; }
+.resultPending { color: #6b7280; }
+.resultDraw   { color: #64748b; }
 
 /* ── Stat 胶囊 ── */
 .stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 2px;
+    flex-shrink: 0;
 }
 
 .statPill {
-    background: linear-gradient(180deg, #dbeafe, #93c5fd);
-    border-radius: 8px;
-    padding: 1px 6px;
+    background: linear-gradient(180deg, #ffffff, #cfe7fa);
+    border-radius: 9px;
+    padding: 2px 7px;
     min-width: 26px;
     text-align: center;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .statPillHighlight {
-    background: linear-gradient(180deg, #fde047, #facc15);
+    background: linear-gradient(180deg, #fef3c7, #fcd34d);
 }
 
 .statValue {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 900;
     color: #1e3a8a;
+    white-space: nowrap;
 }
 
 .statValueHighlight {
-    color: #7c2d12;
+    color: #92400e;
 }
 
 .statLabel {
-    font-size: 8px;
-    opacity: 0.9;
-    font-weight: 600;
+    font-size: 9px;
+    opacity: 1;
+    font-weight: 700;
+    color: #1e40af;
 }
 
 /* ── 运算符 ── */
 .operator {
     font-size: 12px;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.8);
-    padding-bottom: 10px;
+    color: #1e40af;
+    flex-shrink: 0;
 }

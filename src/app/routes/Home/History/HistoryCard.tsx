@@ -2,6 +2,7 @@
 import React from "react";
 import voteRibbon from "@/assets/image/vote-ribbon.png";
 import logoBorder from "@/assets/image/vote-logo-border.png";
+import historyBanner from "@/assets/image/history-banner.png";
 import styles from "./index.module.css";
 
 export interface MatchHistoryEntry {
@@ -29,43 +30,51 @@ const resultClassMap: Record<MatchHistoryEntry["result"], string> = {
 };
 
 export default function HistoryCard({ entry }: HistoryCardProps) {
-  const { firstTeam, secondTeam, votedTeam, result, based, strike, total } = entry;
+  const { firstTeam, matchName, matchTitle, secondTeam, votedTeam, result, based, strike, total } = entry;
 
   return (
-    <div className={styles.card}>
-      <div className={styles.leftSide}>
-        <div className={styles.teamCol}>
-          <FlagWithRibbon
-            flagUrl={firstTeam.flagUrl}
-            alt={firstTeam.name}
-            voted={votedTeam === "first"}
-          />
-          <span className={styles.teamName}>{firstTeam.name}</span>
-        </div>
-
-        <span className={styles.vs}>VS</span>
-
-        <div className={styles.teamCol}>
-          <FlagWithRibbon
-            flagUrl={secondTeam.flagUrl}
-            alt={secondTeam.name}
-            voted={votedTeam === "second"}
-          />
-          <span className={styles.teamName}>{secondTeam.name}</span>
-        </div>
+    <div className={styles.cardWrap}>
+      <div
+        className={styles.banner}
+        style={{ backgroundImage: `url(${historyBanner})` }}
+      >
+        <span className={styles.bannerText}>{matchName} · {matchTitle}</span>
       </div>
-
-      <div className={styles.rightSide}>
-        <div className={styles.statsRow}>
-          <div className={`${styles.result} ${resultClassMap[result]}`}>
-            — {result} —
+      <div className={styles.card}>
+        <div className={styles.leftSide}>
+          <div className={styles.teamCol}>
+            <FlagWithRibbon
+              flagUrl={firstTeam.flagUrl}
+              alt={firstTeam.name}
+              voted={votedTeam === "first"}
+            />
+            <span className={styles.teamName}>{firstTeam.name}</span>
           </div>
 
-          <Stat value={based} label="Based" />
-          <Operator>×</Operator>
-          <Stat value={strike} label="Strike" />
-          <Operator>=</Operator>
-          <Stat value={total} label="Total" highlight />
+          <span className={styles.vs}>VS</span>
+
+          <div className={styles.teamCol}>
+            <FlagWithRibbon
+              flagUrl={secondTeam.flagUrl}
+              alt={secondTeam.name}
+              voted={votedTeam === "second"}
+            />
+            <span className={styles.teamName}>{secondTeam.name}</span>
+          </div>
+        </div>
+
+        <div className={styles.rightSide}>
+          <div className={styles.statsRow}>
+            <div className={`${styles.result} ${resultClassMap[result]}`}>
+              — {result} —
+            </div>
+
+            <Stat value={based} label="Based" />
+            <Operator>×</Operator>
+            <Stat value={strike} label="Strike" />
+            <Operator>=</Operator>
+            <Stat value={total} label="Total" highlight />
+          </div>
         </div>
       </div>
     </div>
