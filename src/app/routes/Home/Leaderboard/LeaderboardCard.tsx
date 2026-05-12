@@ -104,7 +104,7 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
 
       {/* Username */}
       <div className={`${styles.username} ${theme.username}`}>
-        {maskUsername(username)}
+        {username}
       </div>
 
       {/* Streak */}
@@ -137,11 +137,4 @@ function Medal({ rank }: { rank: number }) {
 
 function CoinIcon() {
   return <img src={coinImg} alt="coin" className={styles.coin} />;
-}
-
-function maskUsername(username: string): string {
-  if (username.length <= 4) return username;
-  const start = username.slice(0, 2);
-  const end = username.slice(-4);
-  return `${start}**${end}`;
 }
