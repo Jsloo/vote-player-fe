@@ -3,18 +3,19 @@
 .cardWrap {
     position: relative;
     width: 100%;
-    padding-top: 18px;
+    padding-top: 12px;
 }
 
 .card {
     background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
-    border-radius: 20px;
-    padding: 15px 5px 0px;
-    min-height: 52px;
+    border-radius: 16px;
+    padding: 8px 10px;
+    min-height: 44px;
     display: flex;
     align-items: center;
-    gap: 5px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    justify-content: space-between;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     color: white;
     width: 100%;
     box-sizing: border-box;
@@ -25,20 +26,20 @@
 /* ── Banner ── */
 .banner {
     position: absolute;
-    top: -20px;
+    top: -18px;
     left: 0;
     right: 0;
     margin: 0 auto;
-    width: 70%;
-    max-width: 280px;
-    height: 100px;
+    width: 65%;
+    max-width: 230px;
+    height: 78px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 31px;
+    padding-top: 22px;
     box-sizing: border-box;
     z-index: 2;
     pointer-events: none;
@@ -46,7 +47,7 @@
 
 .bannerText {
     color: white;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.3px;
     white-space: nowrap;
@@ -69,20 +70,22 @@
 }
 
 .teamName {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     color: #1e40af;
+    line-height: 1;
 }
 
 .vs {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 900;
     color: #1e40af;
-    margin: 0 3px;
-    margin-top: -10px;
+    margin: 0 4px;
+    margin-top: -8px;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
     z-index: 3;
     font-style: italic;
+    line-height: 1;
 }
 
 /* ── 国旗 ── */
@@ -91,8 +94,8 @@
 }
 
 .flagBorder {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -102,8 +105,8 @@
 }
 
 .flagImg {
-    width: 28px;
-    height: 28px;
+    width: 23px;
+    height: 23px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -112,7 +115,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 20px;
+    width: 16px;
     height: auto;
     transform: rotate(15deg);
     pointer-events: none;
@@ -121,26 +124,33 @@
 
 /* ── 右侧 ── */
 .rightSide {
-    flex: 0 1 auto;
-    min-width: 0;                        /* 关键：允许收缩 */
-    padding-left: 2px;
+    flex: 1 1 auto;                  /* 改：让右侧自动占据剩余空间 */
+    min-width: 0;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .statsRow {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 3px;
+    gap: 6px;                        /* 5 → 6 */
     flex-wrap: nowrap;
 }
 
 .result {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     white-space: nowrap;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     flex-shrink: 0;
-    margin-right: 1px;
+    margin-right: 2px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1.5px;           /* 关键：加大字距让 — LOSS — 变长 */
 }
 
 .resultWin    { color: #facc15; }
@@ -148,41 +158,39 @@
 .resultPending { color: #6b7280; }
 .resultDraw   { color: #64748b; }
 
-/* ── Stat 胶囊 ── */
+/* ── Stat 胶囊（长方形） ── */
 .stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     flex-shrink: 0;
 }
 
 .statPill {
-    background: linear-gradient(180deg, #ffffff, #cfe7fa);
-    border-radius: 9px;
-    padding: 2px 7px;
-    min-width: 26px;
+    background: #56b2d7;
+    border-radius: 5px;              /* 6 → 5，更挺括的长方形 */
+    padding: 3px 10px;               /* 关键：左右 padding 10 → 14 */
+    min-width: 40px;                 /* 关键：36 → 48，胶囊更长 */
     text-align: center;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
 
 .statPillHighlight {
-    background: linear-gradient(180deg, #fef3c7, #fcd34d);
+    background: #ffd267;
 }
 
 .statValue {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 900;
-    color: #1e3a8a;
     white-space: nowrap;
-}
-
-.statValueHighlight {
-    color: #92400e;
+    line-height: 1;
+    color: white;                    /* 加：模板里数字是白色 */
 }
 
 .statLabel {
@@ -190,6 +198,7 @@
     opacity: 1;
     font-weight: 700;
     color: #1e40af;
+    line-height: 1;
 }
 
 /* ── 运算符 ── */
@@ -198,4 +207,7 @@
     font-weight: 800;
     color: #1e40af;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    line-height: 1;
 }

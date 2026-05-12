@@ -118,7 +118,7 @@ function Stat({
   return (
     <div className={styles.stat}>
       <div className={`${styles.statPill} ${highlight ? styles.statPillHighlight : ""}`}>
-        <span className={`${styles.statValue} ${highlight ? styles.statValueHighlight : ""}`}>
+        <span className={`${styles.statValue}`}>
           {value}
         </span>
       </div>
