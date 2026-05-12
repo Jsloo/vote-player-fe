@@ -7,17 +7,40 @@
     gap: 6px;
     padding: 4px 10px 4px 0;
     border-radius: 14px;
-    width: 100%;
     box-sizing: border-box;
     min-height: 48px;
     overflow: hidden;
     border: none;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    /* ← 去掉 width: 100% */
 }
 
 .cardCurrentUser {
     border: 3px solid #facc15;
     box-shadow: 0 4px 14px rgba(250, 204, 21, 0.4);
+}
+
+.cardLarge {
+    min-height: 58px;
+    width: 100%;
+    padding: 6px 14px 6px 0;
+    gap: 8px;
+}
+
+.cardMedium {
+    min-height: 50px;
+    width: 98%;
+    padding: 4px 10px 4px 0;
+    gap: 6px;
+    align-self: center;
+}
+
+.cardSmall {
+    min-height: 42px;
+    width: 94%;
+    padding: 3px 8px 3px 0;
+    gap: 5px;
+    align-self: center;
 }
 
 /* ── Background themes ── */
@@ -39,17 +62,21 @@
 
 /* ── Rank pill (4th, 5th, ...) ── */
 .rankPill {
-    background: linear-gradient(180deg, #93c5fd, #3b82f6);
+    background: #518dca;
     color: white;
     font-weight: 800;
     font-size: 13px;
-    padding: 5px 0;
-    border-radius: 12px;
-    width: 52px;
+    padding: 3px 0;
+    border-radius: 8px;
+    width: 60px;
     text-align: center;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.15);
     flex-shrink: 0;
+    margin-left: -5px;
 }
+
+.rankPillLarge { width: 70px; font-size: 14px; padding: 4px 0; }
+.rankPillSmall { width: 54px; font-size: 11px; padding: 2px 0; }
 
 /* ── Medal image ── */
 .medal {
@@ -58,6 +85,12 @@
     object-fit: contain;
     flex-shrink: 0;
     margin: -30px -16px -30px -8px;
+}
+
+.medalSmall {
+    width: 58px;
+    height: 74px;
+    margin: -22px -12px -22px -6px;
 }
 
 /* ── Mascot ── */
@@ -91,6 +124,10 @@
     margin-left: 4px;
 }
 
+.usernameLarge  { font-size: 15px; }
+.usernameMedium { font-size: 13px; }
+.usernameSmall  { font-size: 12px; }
+
 .usernameRank1 { color: #a16207; }
 .usernameRank2 { color: #0c4a6e; }
 .usernameRank3 { color: #7c2d12; }
@@ -99,17 +136,21 @@
 
 /* ── Streak pill ── */
 .streakPill {
-    background: linear-gradient(180deg, #3b82f6, #1d4ed8);
-    color: white;
-    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 22px;
+    border-radius: 6px;
     font-size: 11px;
-    border-radius: 12px;
-    width: 64px;
-    padding: 3px 0;
-    text-align: center;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
 }
+
+.streakPillLarge  { width: 80px; height: 22px; font-size: 11px; }
+.streakPillMedium { width: 80px; height: 22px; font-size: 11px; }
+.streakPillSmall  { width: 70px; height: 20px; font-size: 10px; }
 
 /* ── Point pill ── */
 .pointWrap {
@@ -118,6 +159,10 @@
     margin-left: 8px;
     width: 70px;
 }
+
+.pointWrapLarge  { width: 70px; }
+.pointWrapMedium { width: 70px; }
+.pointWrapSmall  { width: 62px; }
 
 .pointLabel {
     position: absolute;
@@ -128,6 +173,10 @@
     font-weight: 600;
     white-space: nowrap;
 }
+
+.pointLabelLarge  { font-size: 9px; top: -17px; }
+.pointLabelMedium { font-size: 9px; top: -17px; }
+.pointLabelSmall  { font-size: 8px; top: -15px; }
 
 .pointLabelRank1 { color: #a16207; }
 .pointLabelRank2 { color: #0369a1; }
@@ -148,25 +197,25 @@
     position: relative;
 }
 
-/* Point pill 主题色 — 跟卡片背景协调 */
+/* Point pill 主题色 */
 .pointPillRank1 {
-    background: linear-gradient(180deg, #fbbf24, #d97706);   /* 金色 → 深金 */
+    background: #e59832;
 }
 
 .pointPillRank2 {
-    background: linear-gradient(180deg, #7dd3fc, #0284c7);   /* 浅蓝 → 深蓝 */
+    background: #2596be;
 }
 
 .pointPillRank3 {
-    background: linear-gradient(180deg, #fb923c, #c2410c);   /* 橙 → 深橙红 */
+    background: #e36430;
 }
 
 .pointPillCurrentUser {
-    background: linear-gradient(180deg, #93c5fd, #3b82f6);   /* 蓝色（当前用户） */
+    background: #518dca;
 }
 
 .pointPillDefault {
-    background: linear-gradient(180deg, #93c5fd, #3b82f6);   /* 蓝色（默认） */
+    background: #518dca;
 }
 
 .pointValue {
@@ -178,7 +227,11 @@
     padding-left: 4px;
 }
 
-/* ── Coin icon — 凸出胶囊左侧 ── */
+.pointValueLarge  { font-size: 12px; }
+.pointValueMedium { font-size: 12px; }
+.pointValueSmall  { font-size: 11px; }
+
+/* ── Coin icon ── */
 .coin {
     width: 22px;
     height: 22px;
@@ -191,3 +244,6 @@
     z-index: 2;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
+
+.coinLarge { width: 22px; height: 22px; left: -6px; }
+.coinSmall { width: 20px; height: 20px; left: -5px; }
