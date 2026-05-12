@@ -83,26 +83,52 @@
     background-size: cover;
     background-position: center;
     border-radius: 20px;
-    padding: 16px;
     color: white;
     box-sizing: border-box;
 }
 
+/* ── Ticket header (white tab at top of blue ticket) ── */
 .ticketHeader {
-    text-align: center;
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 70%;
+    margin: -18px auto 36px;  /* 负 margin 把它往上拉出 ticket 顶边 */
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;  /* 确保在 ticket 之上 */
+}
+
+/* voted 状态下让 header 在 ticket 内部正常位置 */
+.ticketHeaderVoted {
+    margin: -16px auto 16px;
 }
 
 .matchName {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
-    color: #93c5fd;
+    color: #1a5fbe;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .matchTime {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a5fbe;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
 }
 
 /* ── Teams row ── */
@@ -245,17 +271,17 @@
 }
 
 .votedFlagImg {
-    width: 112px;
-    height: 112px;
+    width: 120px;
+    height: 114px;
     object-fit: cover;
     border-radius: 50%;
 }
 
 .ribbon {
     position: absolute;
-    top: -6px;
-    right: -8px;
-    width: 70px;
+    top: 4px;       /* 之前是 -6px，往下移让它贴近圆圈 */
+    right: 4px;     /* 之前是 -8px，往左移让它贴近圆圈 */
+    width: 60px;    /* 之前是 70px，稍微小一点更协调 */
     height: auto;
     transform: rotate(15deg);
     pointer-events: none;

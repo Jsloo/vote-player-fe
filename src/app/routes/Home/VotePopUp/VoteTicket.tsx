@@ -6,6 +6,7 @@ import flagBorder from '@/assets/image/vote-logo-border.png';
 import checkIcon from '@/assets/image/checkIcon.png';
 import voteRibbon from '@/assets/image/vote-ribbon.png';
 import styles from './index.module.css';
+import dayjs from 'dayjs';
 
 export interface MatchVoteData {
   matchId: number;
@@ -24,6 +25,7 @@ interface MatchVotePopupProps {
 export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePopupProps) {
   const [selected, setSelected] = useState<"first" | "second" | null>(null);
   const [voted, setVoted] = useState(false);
+  const formattedTime = dayjs(match.matchTime).format('D MMM, h:mm a');
 
   const handleConfirm = () => {
     if (!selected) return;
@@ -58,12 +60,12 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
 
         <div className={styles.body}>
           <div
-            className={styles.ticket}
+            className={`${styles.ticket} ${voted ? styles.ticketVoted : ''}`}
             style={{ backgroundImage: `url(${blueImg})` }}
           >
-            <div className={styles.ticketHeader}>
+            <div className={`${styles.ticketHeader} ${voted ? styles.ticketHeaderVoted : ''}`}>
               <div className={styles.matchName}>{match.matchName}</div>
-              <div className={styles.matchTime}>{match.matchTime}</div>
+              <div className={styles.matchTime}>{formattedTime}</div>
             </div>
 
             {!voted ? (

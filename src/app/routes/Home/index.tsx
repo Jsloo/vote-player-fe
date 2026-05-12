@@ -1,4 +1,4 @@
-import { skipToken } from '@tanstack/react-query'
+import { skipToken, useQueryClient } from '@tanstack/react-query'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
@@ -27,6 +27,7 @@ function HomeHallContent() {
   const campaignId = useMemo(() => parseCampaignIdFromEnv(), [])
   const [selectedMatchDate, setSelectedMatchDate] = useState<Dayjs>(() => dayjs())
   const [voteMatch, setVoteMatch] = useState<MatchVoteData | null>(null)
+  const queryClient = useQueryClient()
 
   const setSelectedMatchDateStable = useCallback((d: Dayjs) => {
     setSelectedMatchDate(d)
@@ -146,12 +147,17 @@ function HomeHallContent() {
 
   // ── Vote mutation ──
   const voteMutation = tsr.voteTeam.useMutation({
-    onSuccess: () => {
-      console.log('Vote successful!')
-      // 投票成功，可以让 popup 显示成功状态（你的 popup 已经有这个）
-      // 也可以刷新比赛数据看新的投票结果
+    onSuccess: (response) => {
+      console.log('✅ Vote success, response:', response)
+      console.log('campaignId:', campaignId, 'type:', typeof campaignId)
+      queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
+      queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
     },
     onError: (error) => {
+      console.error('Vote failed:', error)
+      console.error('Error status:', error?.status)
+      console.error('Error body:', error?.body)
+      console.error('Full error:', JSON.stringify(error, null, 2))
       console.error('Vote failed:', error)
     },
   })
