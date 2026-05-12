@@ -1,4 +1,4 @@
-export { ErrorCode } from "./errorCode";
+export { ErrorCodes, type ErrorCode } from "./errorCode";
 export {
   DEFAULT_LANGUAGE,
   isSupportedLanguage,

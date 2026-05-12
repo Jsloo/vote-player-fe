@@ -10,7 +10,7 @@ import {
 import { skipToken } from "@tanstack/react-query";
 import { useLocation } from "react-router";
 import { tsr } from "@/app/contract";
-import { ErrorCode } from "@/app/constant/errorCode";
+import type { ErrorCode } from "@/app/constant/errorCode";
 import { registerAuthErrorHandler } from "@/app/utils/sessionHandler";
 import {
   SESSION_CHANGED_EVENT,

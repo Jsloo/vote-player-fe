@@ -69,7 +69,8 @@ export function CalendarStrip({
       if (response.status !== 200) {
         return []
       }
-      return response.body
+      const rows = response.body ?? []
+      return rows
         .map((row) => ({
           date: dayjs(row.date),
           matchCount: row.totalMatches,

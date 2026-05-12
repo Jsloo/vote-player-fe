@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import { useLocation } from 'react-router'
-import { ErrorCode } from '@/app/constant/errorCode'
+import { ErrorCodes } from '@/app/constant/errorCode'
 import { shouldShowMissingEntryGate } from '@/app/utils/bootstrap'
 import { buildSseConnectUrl } from '@/app/utils/buildSseConnectUrl'
 import { notifyAuthError } from '@/app/utils/sessionHandler'
@@ -46,7 +46,7 @@ export function EventProvider({ children }: { children: ReactNode }) {
   const checkingInvalidSessionRef = useRef(false)
 
   const triggerSessionInvalid = useCallback(() => {
-    notifyAuthError(ErrorCode.SESSION_INVALID)
+    notifyAuthError(ErrorCodes.SESSION_INVALID)
     clearSession()
   }, [])
 
@@ -60,7 +60,7 @@ export function EventProvider({ children }: { children: ReactNode }) {
 
   const handleSsePayloadAuthError = useCallback((data: string) => {
     const payload = parseSseEnvelope(data)
-    if (payload?.code === ErrorCode.SESSION_INVALID) {
+    if (payload?.code === ErrorCodes.SESSION_INVALID) {
       triggerSessionInvalid()
     }
   }, [parseSseEnvelope, triggerSessionInvalid])
@@ -72,7 +72,7 @@ export function EventProvider({ children }: { children: ReactNode }) {
       const response = await fetch(url)
       if (!response.ok) {
         const payload = (await response.json()) as SseEnvelope
-        if (payload.code === ErrorCode.SESSION_INVALID) {
+        if (payload.code === ErrorCodes.SESSION_INVALID) {
           triggerSessionInvalid()
         }
       }

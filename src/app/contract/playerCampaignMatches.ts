@@ -1,6 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { ErrorCode } from "@/app/constant/errorCode";
+import { ErrorCodes } from "@/app/constant/errorCode";
 import { notifyAuthError } from "@/app/utils/sessionHandler";
 import { clearSession } from "@/app/utils/sessionTools";
 
@@ -81,8 +81,8 @@ export function publicEnvelopeSchema<T extends z.ZodTypeAny>(dataSchema: T) {
       data: dataSchema,
     })
     .transform((env) => {
-      if (env.code === ErrorCode.SESSION_INVALID) {
-        notifyAuthError(ErrorCode.SESSION_INVALID);
+      if (env.code === ErrorCodes.SESSION_INVALID) {
+        notifyAuthError(ErrorCodes.SESSION_INVALID);
         clearSession();
         throw new Error(env.message || "Session invalid");
       }

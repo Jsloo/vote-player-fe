@@ -49,7 +49,7 @@ function HomeHallContent() {
   })
 
   const totalTicketBalance = useMemo(() => {
-    if (!ticketData || ticketData.status !== 200) return 0
+    if (!ticketData || ticketData.status !== 200 || !ticketData.body) return 0
     return ticketData.body.totalTicketBalance
   }, [ticketData])
 
@@ -66,27 +66,30 @@ function HomeHallContent() {
   })
 
   const leaderboardCurrentUser: RankingEntry | null = useMemo(() => {
-    if (!leaderboardData || leaderboardData.status !== 200) return null
+    if (!leaderboardData || leaderboardData.status !== 200 || !leaderboardData.body)
+      return null
     return leaderboardData.body.currentUser ?? null
   }, [leaderboardData])
 
   const leaderboardTopRankings: RankingEntry[] = useMemo(() => {
-    if (!leaderboardData || leaderboardData.status !== 200) return []
+    if (!leaderboardData || leaderboardData.status !== 200 || !leaderboardData.body)
+      return []
     return leaderboardData.body.topRankings
   }, [leaderboardData])
 
   const liveMatches: PlayerMatchResponse[] = useMemo(() => {
-    if (!matchData || matchData.status !== 200) return []
+    if (!matchData || matchData.status !== 200 || !matchData.body) return []
     return selectLiveMatchesWithTwoTeams(matchData.body)
   }, [matchData])
 
   const dateMatches: PlayerMatchResponse[] = useMemo(() => {
-    if (!matchData || matchData.status !== 200) return []
+    if (!matchData || matchData.status !== 200 || !matchData.body) return []
     return selectDateMatchesWithTwoTeams(matchData.body)
   }, [matchData])
 
-  const historyEntries : MatchHistoryEntry[] = useMemo(() => {
-    if(!voteHistoryData || voteHistoryData.status !== 200) return []
+  const historyEntries: MatchHistoryEntry[] = useMemo(() => {
+    if (!voteHistoryData || voteHistoryData.status !== 200 || !voteHistoryData.body)
+      return []
 
     return voteHistoryData.body.map((item) => {
       const teamOne = item.teams[0]
@@ -100,10 +103,10 @@ function HomeHallContent() {
         firstTeam: { name : teamOne.teamName, flagUrl: teamOne.teamLogo },
         secondTeam: { name : teamTwo.teamName, flagUrl: teamTwo.teamLogo },
         votedTeam: selectedTeam ? 'first' : 'second',
-        result: item.status,
-        based: item.basePoints,
-        strike: item.multiplier,
-        total: item.pointsEarned,
+        result: item.status ?? 'PENDING',
+        based: item.basePoints ?? 0,
+        strike: item.multiplier ?? 0,
+        total: item.pointsEarned ?? 0,
       }
     })
   },[voteHistoryData])
@@ -147,16 +150,18 @@ function HomeHallContent() {
 
   // ── Vote mutation ──
   const voteMutation = tsr.voteTeam.useMutation({
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
       queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
     },
     onError: (error) => {
       console.error('Vote failed:', error)
-      console.error('Error status:', error?.status)
-      console.error('Error body:', error?.body)
+      if (error && typeof error === 'object' && 'status' in error) {
+        const err = error as { status?: unknown; body?: unknown }
+        console.error('Error status:', err.status)
+        console.error('Error body:', err.body)
+      }
       console.error('Full error:', JSON.stringify(error, null, 2))
-      console.error('Vote failed:', error)
     },
   })
 
