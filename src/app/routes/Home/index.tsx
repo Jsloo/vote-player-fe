@@ -148,8 +148,6 @@ function HomeHallContent() {
   // ── Vote mutation ──
   const voteMutation = tsr.voteTeam.useMutation({
     onSuccess: (response) => {
-      console.log('✅ Vote success, response:', response)
-      console.log('campaignId:', campaignId, 'type:', typeof campaignId)
       queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
       queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
     },

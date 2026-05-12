@@ -21,7 +21,54 @@ interface LeaderboardCardProps {
   isCurrentUser?: boolean;
 }
 
-// 主题映射 — 决定用哪几个 class
+type SizeVariant = 'large' | 'medium' | 'small';
+
+function getSize(rank: number, isCurrentUser?: boolean): SizeVariant {
+  if (isCurrentUser) return 'large';
+  if (rank >= 1 && rank <= 3) return 'medium';
+  return 'small';
+}
+
+function getSizeClasses(size: SizeVariant) {
+  if (size === 'large') {
+    return {
+      card: styles.cardLarge,
+      rankPill: styles.rankPillLarge,
+      medal: '',
+      username: styles.usernameLarge,
+      streakPill: styles.streakPillLarge,
+      pointWrap: styles.pointWrapLarge,
+      pointLabel: styles.pointLabelLarge,
+      pointValue: styles.pointValueLarge,
+      coin: styles.coinLarge,
+    };
+  }
+  if (size === 'medium') {
+    return {
+      card: styles.cardMedium,
+      rankPill: '',
+      medal: '',
+      username: styles.usernameMedium,
+      streakPill: styles.streakPillMedium,
+      pointWrap: styles.pointWrapMedium,
+      pointLabel: styles.pointLabelMedium,
+      pointValue: styles.pointValueMedium,
+      coin: '',
+    };
+  }
+  return {
+    card: styles.cardSmall,
+    rankPill: styles.rankPillSmall,
+    medal: styles.medalSmall,
+    username: styles.usernameSmall,
+    streakPill: styles.streakPillSmall,
+    pointWrap: styles.pointWrapSmall,
+    pointLabel: styles.pointLabelSmall,
+    pointValue: styles.pointValueSmall,
+    coin: styles.coinSmall,
+  };
+}
+
 function getThemeClasses(rank: number, isCurrentUser?: boolean) {
   if (rank === 1) {
     return {
@@ -63,6 +110,13 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
   };
 }
 
+function getStreakColor(streak: number): string {
+  if (streak <= 0) return '#D9D9D9';
+  if (streak <= 5) return '#0800FF';
+  if (streak <= 10) return '#ED21B0';
+  return '#FF0000';
+}
+
 function formatPoints(n: number): string {
   if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + 'B';
   if (n >= 1_000_000)     return (n / 1_000_000).toFixed(1) + 'M';
@@ -73,22 +127,24 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
   const { username, totalPoints, currentStreak, rank } = entry;
 
   const theme = getThemeClasses(rank, isCurrentUser);
+  const size = getSize(rank, isCurrentUser);
+  const sz = getSizeClasses(size);
+
   const showMascot = rank >= 1 && rank <= 3;
   const useMedal = rank >= 1 && rank <= 3;
 
-  const cardClass = `${styles.card} ${theme.bg} ${isCurrentUser ? styles.cardCurrentUser : ""}`;
+  const cardClass = `${styles.card} ${sz.card} ${theme.bg} ${isCurrentUser ? styles.cardCurrentUser : ""}`;
 
   const renderRank = () => {
-    if (useMedal) return <Medal rank={rank} />;
+    if (useMedal) return <Medal rank={rank} extraClass={sz.medal} />;
     const label = rank === 0 ? "—" : `${rank}th`;
-    return <div className={styles.rankPill}>{label}</div>;
+    return <div className={`${styles.rankPill} ${sz.rankPill}`}>{label}</div>;
   };
 
   return (
     <div className={cardClass}>
       {renderRank()}
 
-      {/* Mascot */}
       {showMascot && (
         <div
           className={styles.mascotWrap}
@@ -102,39 +158,43 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         </div>
       )}
 
-      {/* Username */}
-      <div className={`${styles.username} ${theme.username}`}>
+      <div className={`${styles.username} ${sz.username} ${theme.username}`}>
         {username}
       </div>
 
-      {/* Streak */}
-      <div className={styles.streakPill}>
-        Streak X{currentStreak || 1}
+      <div
+        className={`${styles.streakPill} ${sz.streakPill}`}
+        style={{ backgroundColor: getStreakColor(currentStreak) }}
+      >
+        {currentStreak > 0 ? `Streak X${currentStreak}` : ''}
       </div>
 
-      {/* Point */}
-      <div className={styles.pointWrap}>
-        <div className={`${styles.pointLabel} ${theme.pointLabel}`}>Point</div>
-        <div className={styles.pointPill}>
-          <CoinIcon />
-          <span className={styles.pointValue}>{formatPoints(totalPoints)}</span>
+      <div className={`${styles.pointWrap} ${sz.pointWrap}`}>
+        <div className={`${styles.pointLabel} ${sz.pointLabel} ${theme.pointLabel}`}>
+          Point
+        </div>
+        <div className={`${styles.pointPill} ${theme.pointPill}`}>
+          <CoinIcon extraClass={sz.coin} />
+          <span className={`${styles.pointValue} ${sz.pointValue}`}>
+            {formatPoints(totalPoints)}
+          </span>
         </div>
       </div>
     </div>
   );
 }
 
-function Medal({ rank }: { rank: number }) {
+function Medal({ rank, extraClass }: { rank: number; extraClass?: string }) {
   const medalImages: Record<number, string> = { 1: medal1, 2: medal2, 3: medal3 };
   return (
     <img
       src={medalImages[rank]}
       alt={`Rank ${rank}`}
-      className={styles.medal}
+      className={`${styles.medal} ${extraClass ?? ''}`}
     />
   );
 }
 
-function CoinIcon() {
-  return <img src={coinImg} alt="coin" className={styles.coin} />;
+function CoinIcon({ extraClass }: { extraClass?: string }) {
+  return <img src={coinImg} alt="coin" className={`${styles.coin} ${extraClass ?? ''}`} />;
 }
