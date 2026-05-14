@@ -46,7 +46,7 @@ function HomeHallContent() {
         : skipToken,
   })
 
-  const { data: ticketData } = tsr.getTicket.useQuery({
+  const { data: ticketData, isPending: isTicketPending } = tsr.getTicket.useQuery({
     queryKey: ['getTicket', campaignId],
     queryData: campaignId !== null ? { params: { campaignId } } : skipToken,
   })
@@ -56,13 +56,13 @@ function HomeHallContent() {
     return ticketData.body.totalTicketBalance
   }, [ticketData])
 
-  const { data: voteHistoryData } = tsr.getVoteHistory.useQuery({
+  const { data: voteHistoryData, isPending: isVoteHistoryPending } = tsr.getVoteHistory.useQuery({
     queryKey: ['voteHistory', campaignId],
     queryData:
       campaignId !== null ? { params: { campaignId } } : skipToken,
   })
 
-  const { data: leaderboardData } = tsr.getLeaderboard.useQuery({
+  const { data: leaderboardData, isPending: isLeaderboardPending } = tsr.getLeaderboard.useQuery({
     queryKey: ['leaderboard', campaignId],
     queryData:
       campaignId !== null ? { params: { campaignId } } : skipToken,
@@ -209,7 +209,10 @@ function HomeHallContent() {
   return (
     <section aria-label="Promotional banner">
       <Banner />
-      <MatchActionBar totalTicketBalance={totalTicketBalance} />
+      <MatchActionBar
+        totalTicketBalance={totalTicketBalance}
+        isLoading={isTicketPending}
+      />
       <CalendarStrip
         campaignId={campaignId}
         selectedDate={selectedMatchDate}
@@ -234,6 +237,8 @@ function HomeHallContent() {
         currentUser={leaderboardCurrentUser ?? null}
         topRankings={leaderboardTopRankings}
         history={historyEntries}
+        isLeaderboardLoading={isLeaderboardPending}
+        isHistoryLoading={isVoteHistoryPending}
       />
 
     </section>

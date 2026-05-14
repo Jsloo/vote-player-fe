@@ -1,5 +1,6 @@
 // LeaderboardPanel.tsx
 import { useState } from "react";
+import { Skeleton } from "@/app/components/Skeleton";
 import LeaderboardCard, { type RankingEntry } from "./LeaderboardCard";
 import HistoryCard, { type MatchHistoryEntry } from "../History/HistoryCard";
 import styles from "./Panel.module.css";
@@ -9,6 +10,22 @@ interface LeaderboardPanelProps {
   topRankings: RankingEntry[];
   history?: MatchHistoryEntry[];
   visibleCount?: number;
+  isLeaderboardLoading?: boolean;
+  isHistoryLoading?: boolean;
+}
+
+const SKELETON_ROW_COUNT = 4;
+
+function SkeletonRows() {
+  return (
+    <>
+      {Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => (
+        <div key={i} className={styles.itemRow}>
+          <Skeleton width="100%" height={56} radius={12} />
+        </div>
+      ))}
+    </>
+  );
 }
 
 export default function LeaderboardPanel({
@@ -16,6 +33,8 @@ export default function LeaderboardPanel({
                                            topRankings,
                                            history = [],
                                            visibleCount = 30,
+                                           isLeaderboardLoading = false,
+                                           isHistoryLoading = false,
                                          }: LeaderboardPanelProps) {
   const [tab, setTab] = useState<"leaderboard" | "history">("leaderboard");
 
@@ -44,9 +63,11 @@ export default function LeaderboardPanel({
       <div className={styles.panel}>
         {tab === "leaderboard" ? (
           <div className={styles.scrollArea} style={{ maxHeight: innerMaxHeight }}>
-            {!hasLeaderboardData ? (
-                <div className={styles.empty}>No leaderboard yet</div>
-            ):(
+            {isLeaderboardLoading && !hasLeaderboardData ? (
+              <SkeletonRows />
+            ) : !hasLeaderboardData ? (
+              <div className={styles.empty}>No leaderboard yet</div>
+            ) : (
               <>
                 {currentUser && (
                   <div className={styles.stickyWrap}>
@@ -63,7 +84,9 @@ export default function LeaderboardPanel({
           </div>
         ) : (
           <div className={styles.scrollArea} style={{ maxHeight: innerMaxHeight }}>
-            {history.length === 0 ? (
+            {isHistoryLoading && history.length === 0 ? (
+              <SkeletonRows />
+            ) : history.length === 0 ? (
               <div className={styles.empty}>No history yet</div>
             ) : (
               history.map((entry) => (

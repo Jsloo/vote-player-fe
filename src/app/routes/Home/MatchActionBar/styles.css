@@ -60,6 +60,11 @@
   margin-inline-start: 1px;
 }
 
+.matchActionBarTicketBadgeSkeleton {
+  margin-inline-start: 1px;
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
 .matchActionBarTicketBadge .ant-badge-count {
   min-width: 28px;
   height: 14px;

@@ -2,6 +2,7 @@ import { skipToken } from '@tanstack/react-query'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
+import { Skeleton } from '@/app/components/Skeleton'
 import { tsr } from '@/app/contract'
 import './styles.css'
 
@@ -123,9 +124,15 @@ export function CalendarStrip({
 
   if (isPending) {
     return (
-      <div className="calendarStrip">
+      <div className="calendarStrip" aria-busy="true" aria-label="Loading calendar">
         <div className="calendarStripRow">
-          <span className="calendarStripStatus">Loading calendar…</span>
+          {Array.from({ length: COLLAPSED_COUNT }).map((_, i) => (
+            <div key={i} className="calendarStripCard calendarStripCardSkeleton">
+              <Skeleton width={22} height={14} radius={4} />
+              <Skeleton width={20} height={9} radius={4} />
+              <Skeleton width={40} height={8} radius={4} />
+            </div>
+          ))}
         </div>
       </div>
     )

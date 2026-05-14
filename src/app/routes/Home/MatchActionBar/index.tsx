@@ -1,10 +1,16 @@
 import { Badge, Button } from "antd";
 import { useTranslation } from "react-i18next";
+import { Skeleton } from "@/app/components/Skeleton";
 import ticketIcon from "@/assets/svg/ticket.svg";
 import { translationKey } from "@/i18n/constants";
 import "./styles.css";
 
-export function MatchActionBar({ totalTicketBalance }: { totalTicketBalance: number }) {
+type MatchActionBarProps = {
+  totalTicketBalance: number
+  isLoading?: boolean
+}
+
+export function MatchActionBar({ totalTicketBalance, isLoading }: MatchActionBarProps) {
   const { t } = useTranslation();
 
   return (
@@ -20,18 +26,27 @@ export function MatchActionBar({ totalTicketBalance }: { totalTicketBalance: num
           <span>
             {t(translationKey.MATCH_ACTION_BAR_TICKET, { defaultValue: 'Ticket' })}
           </span>
-          <Badge
-            count={totalTicketBalance}
-            showZero
-            className="matchActionBarTicketBadge"
-            styles={{
-              indicator: {
-                background: "#ffffff",
-                color: "#0f65cf",
-                boxShadow: "none",
-              },
-            }}
-          />
+          {isLoading ? (
+            <Skeleton
+              width={28}
+              height={14}
+              radius={5}
+              className="matchActionBarTicketBadgeSkeleton"
+            />
+          ) : (
+            <Badge
+              count={totalTicketBalance}
+              showZero
+              className="matchActionBarTicketBadge"
+              styles={{
+                indicator: {
+                  background: "#ffffff",
+                  color: "#0f65cf",
+                  boxShadow: "none",
+                },
+              }}
+            />
+          )}
         </Button>
         <Button type="primary" className="matchActionBarGetTicketsButton">
           {t(translationKey.MATCH_ACTION_BAR_GET_TICKETS, {
