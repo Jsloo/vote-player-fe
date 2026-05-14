@@ -26,20 +26,33 @@ export function notifySessionChanged(): void {
   window.dispatchEvent(new CustomEvent(SESSION_CHANGED_EVENT))
 }
 
-const parentTarget = () => import.meta.env.VITE_PARENT_URL || '*'
+function parentTargetOrigin(): string {
+  const raw = import.meta.env.VITE_PARENT_URL
+  if (!raw) return '*'
+  try {
+    return new URL(raw).origin
+  } catch {
+    return '*'
+  }
+}
 
 export function exitApps(): void {
   window.close()
-  window.parent.postMessage({ type: 'IFRAME_CLOSE' }, parentTarget())
+  if (window.parent === window.self) return
+  window.parent.postMessage({ type: 'IFRAME_CLOSE' }, parentTargetOrigin())
 }
 
 export function announceLoad(): void {
-  window.parent.postMessage({ type: 'IFRAME_LOADED' }, parentTarget())
+  if (window.parent === window.self) return
+  window.parent.postMessage({ type: 'IFRAME_LOADED' }, parentTargetOrigin())
 }
 
 export function postSessionIdToParent(sessionId: string): void {
   if (window.parent === window.self) return
-  window.parent.postMessage({ type: 'IFRAME_SESSION_ID', sessionId }, parentTarget())
+  window.parent.postMessage(
+    { type: 'IFRAME_SESSION_ID', sessionId },
+    parentTargetOrigin(),
+  )
 }
 
 export function readSessionIdRaw(): string | null {

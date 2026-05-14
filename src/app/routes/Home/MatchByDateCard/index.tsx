@@ -23,6 +23,13 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
 
   const timeLabel = dayjs(match.matchTime).format('D MMM, h:mma').replace(/\s?(am|pm)$/i, '$1')
 
+  const hasVoted = match.teams.some((t) => t.team.voted)
+  const isVoteDisabled = hasVoted || match.status !== 'UPCOMING'
+
+  const voteLabel = hasVoted
+    ? t(translationKey.MATCH_BY_DATE_VOTED, { defaultValue: 'Voted' })
+    : t(translationKey.MATCH_BY_DATE_VOTE_NOW, { defaultValue: 'Vote Now' })
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -59,18 +66,13 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
 
       <button
         type="button"
-        onClick ={() => onVoteClick(match)}
-        className={styles.voteBtn}
-        aria-label={t(translationKey.MATCH_BY_DATE_VOTE_NOW, {
-          defaultValue: 'Vote Now',
-        })}
+        onClick={() => onVoteClick(match)}
+        disabled={isVoteDisabled}
+        className={`${styles.voteBtn} ${isVoteDisabled ? styles.voteBtnDisabled : ''}`}
+        aria-label={voteLabel}
       >
         <img src={voteButton} alt="" aria-hidden="true" className={styles.voteBtnImg} />
-        <span className={styles.voteBtnText}>
-          {t(translationKey.MATCH_BY_DATE_VOTE_NOW, {
-            defaultValue: 'Vote Now',
-          })}
-        </span>
+        <span className={styles.voteBtnText}>{voteLabel}</span>
       </button>
 
       <div className={styles.voteBarRow}>

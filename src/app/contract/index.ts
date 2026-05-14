@@ -39,6 +39,13 @@ import {
   LeaderboardResponseSchema,
   playerLeaderboardContract,
 } from "./playerLeaderboard";
+import {
+  SseEventSchema,
+  SseScoreDataSchema,
+  SseScoreEventSchema,
+  applyScoreUpdateToMatches,
+  parseSseEvent,
+} from "./sseEvents";
 
 
 export type {
@@ -59,6 +66,12 @@ export type {
 export type {
   PlayerVoteHistoryResponse
 } from "./playerVoteHistory";
+
+export type {
+  SseEvent,
+  SseScoreData,
+  SseScoreEvent,
+} from "./sseEvents";
 
 export {
   MatchCountByDateEnvelopeSchema,
@@ -83,6 +96,11 @@ export {
   LeaderboardPageResponseSchema,
   LeaderboardResponseSchema,
   playerLeaderboardContract,
+  SseEventSchema,
+  SseScoreDataSchema,
+  SseScoreEventSchema,
+  applyScoreUpdateToMatches,
+  parseSseEvent,
 };
 
 async function appendPlayerPublicQuery(path: string) {

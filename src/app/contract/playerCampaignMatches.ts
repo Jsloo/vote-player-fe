@@ -17,6 +17,8 @@ export const TeamResponseSchema = z.object({
   name: z.string(),
   logoUrl: z.string(),
   campaignId: z.number(),
+  /** `true` when the current player has voted for this team in the match. */
+  voted: z.boolean().optional().default(false),
 });
 
 export const MatchTeamResponseSchema = z.object({

@@ -1,13 +1,13 @@
 import { Button } from "antd";
 import { IoChevronBack } from "react-icons/io5";
 import { bannerImage } from "@/assets/image";
-import { closeEmbeddedApp } from "@/app/utils";
+import { exitApps } from "@/app/utils";
 import "./styles.css";
 
 export function Banner() {
   const handleBack = () => {
     if (window.parent && window.parent !== window) {
-      closeEmbeddedApp();
+      exitApps();
       return;
     }
 

@@ -157,6 +157,12 @@
   flex-shrink: 0;
 }
 
+.voteBtnDisabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5) brightness(0.85);
+  opacity: 0.6;
+}
+
 .voteBtnImg {
   width: 58%;
   height: auto;

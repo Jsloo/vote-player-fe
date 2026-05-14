@@ -3,7 +3,10 @@ import dayjs, { type Dayjs } from 'dayjs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   type PlayerMatchResponse,
+  type SseScoreData,
+  applyScoreUpdateToMatches,
   parseCampaignIdFromEnv,
+  parseSseEvent,
   selectDateMatchesWithTwoTeams,
   selectLiveMatchesWithTwoTeams,
   tsr,
@@ -117,11 +120,37 @@ function HomeHallContent() {
     }
   }, [isError, error])
 
+  const applyScoreUpdate = useCallback((update: SseScoreData) => {
+    if (campaignId == null) return
+
+    queryClient.setQueriesData<unknown>(
+      { queryKey: ['getMatch', campaignId] },
+      (old: unknown) => {
+        if (!old || typeof old !== 'object') return old
+        const cached = old as { status?: number; body?: PlayerMatchResponse[] }
+        if (cached.status !== 200 || !cached.body) return old
+        const nextBody = applyScoreUpdateToMatches(cached.body, update)
+        if (nextBody === cached.body) return old
+        return { ...cached, body: nextBody }
+      },
+    )
+
+    if (update.status === 'SETTLED') {
+      void queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
+      void queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
+    }
+  }, [campaignId, queryClient])
+
   const onSse = useCallback((payload: { data: string; eventType: string }) => {
     if (import.meta.env.DEV) {
       console.debug('[SSE]', payload.eventType, payload.data)
     }
-  }, [])
+    const event = parseSseEvent(payload.data)
+    if (!event) return
+    if (event.sseType === 'SCORE') {
+      applyScoreUpdate(event.data)
+    }
+  }, [applyScoreUpdate])
 
   useSubscribe(onSse, [...DEFAULT_SSE_EVENTS])
 
@@ -151,8 +180,10 @@ function HomeHallContent() {
   // ── Vote mutation ──
   const voteMutation = tsr.voteTeam.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
-      queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
+      void queryClient.invalidateQueries({ queryKey: ['getMatch', campaignId] })
+      void queryClient.invalidateQueries({ queryKey: ['getTicket', campaignId] })
+      void queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
+      void queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
     },
     onError: (error) => {
       console.error('Vote failed:', error)
@@ -161,19 +192,17 @@ function HomeHallContent() {
         console.error('Error status:', err.status)
         console.error('Error body:', err.body)
       }
-      console.error('Full error:', JSON.stringify(error, null, 2))
     },
   })
 
   const handleConfirm = (matchId: number, selectedTeam: 'first' | 'second') => {
-    console.log('voted', matchId, selectedTeam)
     if (!campaignId || !voteMatch) return
 
-    const teamId = selectedTeam==="first" ? voteMatch.firstTeam.teamId : voteMatch.secondTeam.teamId
+    const teamId = selectedTeam === 'first' ? voteMatch.firstTeam.teamId : voteMatch.secondTeam.teamId
 
     voteMutation.mutate({
-      params: {campaignId, matchId},
-      body: {teamId}
+      params: { campaignId, matchId },
+      body: { teamId },
     })
   }
 
