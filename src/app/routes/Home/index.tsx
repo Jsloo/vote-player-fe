@@ -177,34 +177,66 @@ function HomeHallContent() {
 
   }
 
-  // ── Vote mutation ──
   const voteMutation = tsr.voteTeam.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // 后端约定：HTTP 200 不代表业务成功，要看 body.success
+      const body = data.body as { success?: boolean } | undefined
+      if (body?.success === false) {
+        if (import.meta.env.DEV) {
+          console.warn('Vote business error:', data.body)
+        }
+        return
+      }
+
       void queryClient.invalidateQueries({ queryKey: ['getMatch', campaignId] })
       void queryClient.invalidateQueries({ queryKey: ['getTicket', campaignId] })
       void queryClient.invalidateQueries({ queryKey: ['voteHistory', campaignId] })
       void queryClient.invalidateQueries({ queryKey: ['leaderboard', campaignId] })
     },
     onError: (error) => {
-      console.error('Vote failed:', error)
-      if (error && typeof error === 'object' && 'status' in error) {
-        const err = error as { status?: unknown; body?: unknown }
-        console.error('Error status:', err.status)
-        console.error('Error body:', err.body)
+      if (import.meta.env.DEV) {
+        console.error('Vote HTTP error:', error)
       }
     },
   })
 
-  const handleConfirm = (matchId: number, selectedTeam: 'first' | 'second') => {
-    if (!campaignId || !voteMatch) return
+  const handleConfirm = useCallback(
+    async (matchId: number, selectedTeam: 'first' | 'second'): Promise<void> => {
+      if (!campaignId || !voteMatch) {
+        throw new Error('Invalid state')
+      }
 
-    const teamId = selectedTeam === 'first' ? voteMatch.firstTeam.teamId : voteMatch.secondTeam.teamId
+      const teamId = selectedTeam === 'first'
+        ? voteMatch.firstTeam.teamId
+        : voteMatch.secondTeam.teamId
 
-    voteMutation.mutate({
-      params: { campaignId, matchId },
-      body: { teamId },
-    })
-  }
+      const result = await voteMutation.mutateAsync({
+        params: { campaignId, matchId },
+        body: { teamId },
+      })
+
+      const body = result.body as {
+        success?: boolean
+        code?: string
+        message?: string
+      } | undefined
+
+      // 业务失败：HTTP 200 但 body.success === false
+      if (body?.success === false) {
+        const err = new Error(
+          body.message ?? `Vote failed`
+        ) as Error & { code?: string }
+        err.code = body.code
+        throw err
+      }
+
+      // 非预期状态码
+      if (result.status !== 200 && result.status !== 201) {
+        throw new Error(`Vote failed (HTTP ${result.status})`)
+      }
+    },
+    [campaignId, voteMatch, voteMutation]
+  )
 
   return (
     <section aria-label="Promotional banner">
