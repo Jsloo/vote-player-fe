@@ -1,6 +1,8 @@
 import { Badge, Button } from "antd";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/app/components/Skeleton";
+import { RulesPopup } from "@/app/routes/Home/RulesPopup";
 import ticketIcon from "@/assets/svg/ticket.svg";
 import { translationKey } from "@/i18n/constants";
 import "./styles.css";
@@ -12,6 +14,7 @@ type MatchActionBarProps = {
 
 export function MatchActionBar({ totalTicketBalance, isLoading }: MatchActionBarProps) {
   const { t } = useTranslation();
+  const [rulesOpen, setRulesOpen] = useState(false);
 
   return (
     <div className="matchActionBar" aria-label="Match ticket actions">
@@ -48,12 +51,17 @@ export function MatchActionBar({ totalTicketBalance, isLoading }: MatchActionBar
             />
           )}
         </Button>
-        <Button type="primary" className="matchActionBarGetTicketsButton">
+        <Button
+          type="primary"
+          className="matchActionBarGetTicketsButton"
+          onClick={() => setRulesOpen(true)}
+        >
           {t(translationKey.MATCH_ACTION_BAR_GET_TICKETS, {
             defaultValue: 'Get Tickets ?',
           })}
         </Button>
       </div>
+      <RulesPopup visible={rulesOpen} onClose={() => setRulesOpen(false)} />
     </div>
   );
 }

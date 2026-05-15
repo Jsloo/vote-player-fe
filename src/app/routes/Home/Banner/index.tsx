@@ -5,22 +5,13 @@ import { exitApps } from "@/app/utils";
 import "./styles.css";
 
 export function Banner() {
-  const handleBack = () => {
-    if (window.parent && window.parent !== window) {
-      exitApps();
-      return;
-    }
-
-    window.history.back();
-  };
-
   return (
     <div className="homeBanner">
       <Button
         type="text"
         shape="circle"
         className="homeBannerBackButton"
-        onClick={handleBack}
+        onClick={exitApps}
         icon={<IoChevronBack aria-hidden="true" />}
         aria-label="Go back"
       />
