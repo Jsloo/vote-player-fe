@@ -2,6 +2,8 @@
 
 .root {
     padding: 12px 0px;
+    margin-left: -10px;
+    margin-right: -10px;
 }
 
 /* ── Tabs ── */
@@ -37,6 +39,7 @@
     background: linear-gradient(180deg, #00BAFE 0%, #0099d6 100%);
     padding: 12px 10px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
 }
 
 /* ── Scroll area ── */

@@ -5,14 +5,13 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px 4px 0;
+    padding: 4px 12px 4px 0;
     border-radius: 14px;
     box-sizing: border-box;
     min-height: 48px;
     overflow: hidden;
     border: none;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    /* ← 去掉 width: 100% */
 }
 
 .cardCurrentUser {
@@ -21,25 +20,25 @@
 }
 
 .cardLarge {
-    min-height: 58px;
+    min-height: 56px;
     width: 100%;
-    padding: 6px 14px 6px 0;
+    padding: 6px 16px 6px 0;
     gap: 8px;
 }
 
 .cardMedium {
     min-height: 50px;
     width: 98%;
-    padding: 4px 10px 4px 0;
+    padding: 4px 12px 4px 0;
     gap: 6px;
     align-self: center;
 }
 
 .cardSmall {
-    min-height: 42px;
+    min-height: 44px;
     width: 94%;
-    padding: 3px 8px 3px 0;
-    gap: 5px;
+    padding: 3px 10px 3px 0;
+    gap: 6px;
     align-self: center;
 }
 
@@ -68,35 +67,34 @@
     font-size: 13px;
     padding: 3px 0;
     border-radius: 8px;
-    width: 60px;
+    width: 64px;
     text-align: center;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.15);
     flex-shrink: 0;
-    margin-left: -5px;
 }
 
-.rankPillLarge { width: 70px; font-size: 14px; padding: 4px 0; }
-.rankPillSmall { width: 54px; font-size: 11px; padding: 2px 0; }
+.rankPillLarge { width: 72px; font-size: 14px; padding: 4px 0; }
+.rankPillSmall { width: 56px; font-size: 12px; padding: 2px 0; }
 
 /* ── Medal image ── */
 .medal {
-    width: 70px;
-    height: 90px;
+    width: 72px;
+    height: 92px;
     object-fit: contain;
     flex-shrink: 0;
     margin: -30px -16px -30px -8px;
 }
 
 .medalSmall {
-    width: 58px;
-    height: 74px;
+    width: 60px;
+    height: 76px;
     margin: -22px -12px -22px -6px;
 }
 
 /* ── Mascot ── */
 .mascotWrap {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -107,8 +105,8 @@
 }
 
 .mascotImg {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
     border-radius: 50%;
 }
@@ -139,7 +137,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
+    width: 84px;
     height: 22px;
     border-radius: 6px;
     font-size: 11px;
@@ -148,25 +146,25 @@
     white-space: nowrap;
 }
 
-.streakPillLarge  { width: 80px; height: 22px; font-size: 11px; }
-.streakPillMedium { width: 80px; height: 22px; font-size: 11px; }
-.streakPillSmall  { width: 70px; height: 20px; font-size: 10px; }
+.streakPillLarge  { width: 88px; height: 24px; font-size: 12px; }
+.streakPillMedium { width: 84px; height: 22px; font-size: 11px; }
+.streakPillSmall  { width: 74px; height: 20px; font-size: 10px; }
 
 /* ── Point pill ── */
 .pointWrap {
     position: relative;
     flex-shrink: 0;
     margin-left: 8px;
-    width: 70px;
+    width: 74px;
 }
 
-.pointWrapLarge  { width: 70px; }
-.pointWrapMedium { width: 70px; }
-.pointWrapSmall  { width: 62px; }
+.pointWrapLarge  { width: 78px; }
+.pointWrapMedium { width: 74px; }
+.pointWrapSmall  { width: 66px; }
 
 .pointLabel {
     position: absolute;
-    top: -17px;
+    top: -16px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 9px;
@@ -174,9 +172,9 @@
     white-space: nowrap;
 }
 
-.pointLabelLarge  { font-size: 9px; top: -17px; }
-.pointLabelMedium { font-size: 9px; top: -17px; }
-.pointLabelSmall  { font-size: 8px; top: -15px; }
+.pointLabelLarge  { font-size: 10px; top: -17px; }
+.pointLabelMedium { font-size: 9px; top: -16px; }
+.pointLabelSmall  { font-size: 8px; top: -14px; }
 
 .pointLabelRank1 { color: #a16207; }
 .pointLabelRank2 { color: #0369a1; }
@@ -227,7 +225,7 @@
     padding-left: 4px;
 }
 
-.pointValueLarge  { font-size: 12px; }
+.pointValueLarge  { font-size: 13px; }
 .pointValueMedium { font-size: 12px; }
 .pointValueSmall  { font-size: 11px; }
 
@@ -245,5 +243,27 @@
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
-.coinLarge { width: 22px; height: 22px; left: -6px; }
+.coinLarge { width: 24px; height: 24px; left: -7px; }
 .coinSmall { width: 20px; height: 20px; left: -5px; }
+
+/* ── Rank wrap (for current user "Your Rank" label) ── */
+.rankWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: -5px;
+}
+
+.yourRankLabel {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 700;
+    color: #518dca;
+    line-height: 1.2;
+    white-space: nowrap;
+}

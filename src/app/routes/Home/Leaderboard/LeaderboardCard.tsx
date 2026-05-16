@@ -111,7 +111,6 @@ function getThemeClasses(rank: number, isCurrentUser?: boolean) {
 }
 
 function getStreakColor(streak: number): string {
-  if (streak <= 0) return '#D9D9D9';
   if (streak <= 5) return '#0800FF';
   if (streak <= 10) return '#ED21B0';
   return '#FF0000';
@@ -138,7 +137,18 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
   const renderRank = () => {
     if (useMedal) return <Medal rank={rank} extraClass={sz.medal} />;
     const label = rank === 0 ? "—" : `${rank}th`;
-    return <div className={`${styles.rankPill} ${sz.rankPill}`}>{label}</div>;
+    return (
+      <div className={`${styles.rankWrap} ${sz.rankWrap}`}>
+        {isCurrentUser && (
+          <div className={`${styles.yourRankLabel} ${sz.yourRankLabel}`}>
+            Your Rank
+          </div>
+        )}
+        <div className={`${styles.rankPill} ${sz.rankPill}`}>
+          {label}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -162,12 +172,14 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         {username}
       </div>
 
-      <div
-        className={`${styles.streakPill} ${sz.streakPill}`}
-        style={{ backgroundColor: getStreakColor(currentStreak) }}
-      >
-        {currentStreak > 0 ? `Streak X${currentStreak}` : ''}
-      </div>
+      {currentStreak > 0 && (
+        <div
+          className={`${styles.streakPill} ${sz.streakPill}`}
+          style={{ backgroundColor: getStreakColor(currentStreak) }}
+        >
+          {`Streak X${currentStreak}`}
+        </div>
+      )}
 
       <div className={`${styles.pointWrap} ${sz.pointWrap}`}>
         <div className={`${styles.pointLabel} ${sz.pointLabel} ${theme.pointLabel}`}>
