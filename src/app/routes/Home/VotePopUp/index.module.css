@@ -67,7 +67,6 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Body ── */
 .body {
     flex: 1;
     display: flex;
@@ -77,7 +76,6 @@
     padding: 12px 16px 20px;
 }
 
-/* ── Ticket ── */
 .ticket {
     width: 80%;
     background-size: cover;
@@ -85,9 +83,11 @@
     border-radius: 20px;
     color: white;
     box-sizing: border-box;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ── Ticket header (white tab at top of blue ticket) ── */
 .ticketHeader {
     display: flex;
     flex-direction: column;
@@ -95,14 +95,14 @@
     justify-content: center;
     gap: 0;
     width: 70%;
-    margin: -18px auto 36px;  /* 负 margin 把它往上拉出 ticket 顶边 */
+    margin: -18px auto 16px;
     background: #ffffff;
     border-radius: 16px;
     padding: 10px 16px;
     box-sizing: border-box;
     flex-shrink: 0;
     position: relative;
-    z-index: 2;  /* 确保在 ticket 之上 */
+    z-index: 2;
 }
 
 /* voted 状态下让 header 在 ticket 内部正常位置 */
@@ -138,6 +138,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    padding: 0 16px;                 /* 新增：左右内边距，让 teams 不贴边 */
+    flex: 1;                         /* 新增：撑满 ticket 剩余空间 */
 }
 
 .teamBtn {
