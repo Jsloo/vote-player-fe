@@ -127,9 +127,7 @@ export function selectDateMatchesWithTwoTeams(
   matches: PlayerMatchResponse[],
 ): PlayerMatchResponse[] {
   return matches.filter(
-    (m) =>
-      (m.status === 'UPCOMING' || m.status === 'LIVE') &&
-      m.teams?.length >= 2,
+    (m) => m.status === 'UPCOMING' && m.teams?.length >= 2,
   )
 }
 
