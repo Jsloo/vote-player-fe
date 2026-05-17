@@ -1,15 +1,26 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
-import howToWinEn from '@/assets/svg/how-to-win-en.svg'
-import howToWinMs from '@/assets/svg/how-to-win-ms.svg'
-import howToWinZh from '@/assets/svg/how-to-win-zh-CN.svg'
-import gameRuleEn from '@/assets/svg/game-rule-en.svg'
-import gameRuleMs from '@/assets/svg/game-rule-ms.svg'
-import gameRuleZh from '@/assets/svg/game-rule-zh-CN.svg'
+import howToWinEn from '@/assets/image/how-to-win-en.png'
+import howToWinMs from '@/assets/image/how-to-win-ms.png'
+import howToWinZh from '@/assets/image/how-to-win-zhCN.png'
+import gameRuleEn from '@/assets/image/game-rule-en.png'
+import gameRuleMs from '@/assets/image/game-rule-ms.png'
+import gameRuleZh from '@/assets/image/game-rule-zhCN.png'
 import type { SupportedLanguage } from '@/app/constant'
 import styles from './index.module.css'
+
+// Module-level cache so each asset is fetched at most once per session.
+const preloadedSources = new Set<string>()
+
+function preloadImage(src: string) {
+  if (preloadedSources.has(src)) return
+  preloadedSources.add(src)
+  const img = new Image()
+  img.decoding = 'async'
+  img.src = src
+}
 
 type RulesPopupProps = {
   visible: boolean
@@ -38,18 +49,36 @@ function resolveLanguageKey(lang: string | undefined): SupportedLanguage {
 export function RulesPopup({ visible, onClose }: RulesPopupProps) {
   const { i18n } = useTranslation()
   const [page, setPage] = useState<Page>('how-to-win')
+  const [loaded, setLoaded] = useState<Record<string, boolean>>({})
+  const hasPreloadedRef = useRef(false)
+
+  const lang = useMemo(() => resolveLanguageKey(i18n.language), [i18n.language])
+
+  // Kick off a background fetch of every popup asset the moment the component
+  // mounts so the popup feels instant when the user opens it.
+  useEffect(() => {
+    if (hasPreloadedRef.current) return
+    hasPreloadedRef.current = true
+    const sources = [
+      HOW_TO_WIN_BY_LANG[lang],
+      GAME_RULE_BY_LANG[lang],
+      ...Object.values(HOW_TO_WIN_BY_LANG),
+      ...Object.values(GAME_RULE_BY_LANG),
+    ]
+    sources.forEach(preloadImage)
+  }, [lang])
 
   useEffect(() => {
     if (visible) setPage('how-to-win')
   }, [visible])
-
-  const lang = useMemo(() => resolveLanguageKey(i18n.language), [i18n.language])
 
   const imageSrc =
     page === 'how-to-win' ? HOW_TO_WIN_BY_LANG[lang] : GAME_RULE_BY_LANG[lang]
 
   const imageAlt =
     page === 'how-to-win' ? 'How to win' : 'Game rules'
+
+  const isImageLoaded = !!loaded[imageSrc]
 
   if (!visible) return null
 
@@ -63,7 +92,19 @@ export function RulesPopup({ visible, onClose }: RulesPopupProps) {
     >
       <div className={styles.card} onClick={(e) => e.stopPropagation()}>
         <div className={styles.scrollArea}>
-          <img className={styles.image} src={imageSrc} alt={imageAlt} />
+          {!isImageLoaded && (
+            <div className={styles.loading} aria-hidden="true">
+              <span className={styles.spinner} />
+            </div>
+          )}
+          <img
+            className={styles.image}
+            src={imageSrc}
+            alt={imageAlt}
+            decoding="async"
+            data-loaded={isImageLoaded ? 'true' : 'false'}
+            onLoad={() => setLoaded((prev) => ({ ...prev, [imageSrc]: true }))}
+          />
         </div>
         <button
           type="button"

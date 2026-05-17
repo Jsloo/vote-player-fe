@@ -23,7 +23,9 @@
 }
 
 .scrollArea {
+  position: relative;
   flex: 1 1 auto;
+  min-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -42,6 +44,36 @@
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.image[data-loaded='true'] {
+  opacity: 1;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: rulesPopupSpin 0.9s linear infinite;
+}
+
+@keyframes rulesPopupSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Invisible click target sized to overlay the red X that is drawn inside the SVG (top-right corner of the artwork). Stays pinned to the card so it remains clickable even when the user scrolls the SVG content. */
