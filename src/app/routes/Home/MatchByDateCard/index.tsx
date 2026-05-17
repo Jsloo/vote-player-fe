@@ -39,7 +39,9 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
 
       <div className={styles.teamsRow}>
         <div className={styles.teamCol}>
-          <span className={styles.sideLabel}>Home</span>
+          <span className={styles.sideLabel}>
+            {t(translationKey.COMMON_HOME_SIDE, { defaultValue: 'Home' })}
+          </span>
           <div className={styles.flagWrap}>
             <img src={home.team.logoUrl} alt={home.team.name} className={styles.flagImg} />
             <img src={countryFrameMatch} alt="" aria-hidden="true" className={styles.frameOverlay} />
@@ -48,14 +50,18 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
         </div>
 
         <div className={styles.centerCol}>
-          <span className={styles.vs}>VS</span>
+          <span className={styles.vs}>{t(translationKey.COMMON_VS, { defaultValue: 'VS' })}</span>
           {match.status === 'LIVE' && (
-            <span className={styles.liveBadge}>LIVE</span>
+            <span className={styles.liveBadge}>
+              {t(translationKey.MATCH_BY_DATE_LIVE, { defaultValue: 'LIVE' })}
+            </span>
           )}
         </div>
 
         <div className={styles.teamCol}>
-          <span className={styles.sideLabel}>Away</span>
+          <span className={styles.sideLabel}>
+            {t(translationKey.COMMON_AWAY_SIDE, { defaultValue: 'Away' })}
+          </span>
           <div className={styles.flagWrap}>
             <img src={away.team.logoUrl} alt={away.team.name} className={styles.flagImg} />
             <img src={countryFrameMatch} alt="" aria-hidden="true" className={styles.frameOverlay} />
@@ -76,7 +82,14 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
       </button>
 
       <div className={styles.voteBarRow}>
-        <div className={styles.voteBar} aria-label={`Home ${homePct}%, Away ${awayPct}%`}>
+        <div
+          className={styles.voteBar}
+          aria-label={t(translationKey.MATCH_BY_DATE_VOTE_BAR_ARIA, {
+            defaultValue: 'Home {{homePct}}%, Away {{awayPct}}%',
+            homePct,
+            awayPct,
+          })}
+        >
           <div className={styles.voteBarTrack}>
             <div className={styles.voteBarHome} style={{ width: `${homePct}%` }} />
             <div className={styles.voteBarAway} style={{ width: `${awayPct}%` }} />

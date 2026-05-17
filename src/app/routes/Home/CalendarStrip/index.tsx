@@ -2,8 +2,10 @@ import { skipToken } from '@tanstack/react-query'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
+import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/app/components/Skeleton'
 import { tsr } from '@/app/contract'
+import { translationKey } from '@/i18n/constants'
 import './styles.css'
 
 type MatchDate = {
@@ -20,13 +22,20 @@ function DateCard({
   item,
   selected,
   onClick,
+  todayLabel,
+  matchSingular,
+  matchPlural,
 }: {
   item: MatchDate
   selected: boolean
   onClick: () => void
+  todayLabel: string
+  matchSingular: string
+  matchPlural: string
 }) {
   const isToday = item.date.isSame(today, 'day')
-  const matchLabel = item.matchCount === 1 || item.matchCount === 0 ? 'Match' : 'Matches'
+  const matchLabel =
+    item.matchCount === 1 || item.matchCount === 0 ? matchSingular : matchPlural
 
   return (
     <button
@@ -35,7 +44,7 @@ function DateCard({
       onClick={onClick}
     >
       <span className="calendarStripCardDay">
-        {isToday ? 'Today' : item.date.format('D')}
+        {isToday ? todayLabel : item.date.format('D')}
       </span>
       {!isToday && (
         <span className="calendarStripCardMonth">{item.date.format('MMM')}</span>
@@ -56,7 +65,12 @@ export function CalendarStrip({
   selectedDate: Dayjs
   onSelectedDateChange: (date: Dayjs) => void
 }) {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
+
+  const todayLabel = t(translationKey.CALENDAR_TODAY, { defaultValue: 'Today' })
+  const matchSingular = t(translationKey.CALENDAR_MATCH, { defaultValue: 'Match' })
+  const matchPlural = t(translationKey.CALENDAR_MATCHES, { defaultValue: 'Matches' })
 
   const {
     data: matchDates = [],
@@ -124,7 +138,11 @@ export function CalendarStrip({
 
   if (isPending) {
     return (
-      <div className="calendarStrip" aria-busy="true" aria-label="Loading calendar">
+      <div
+        className="calendarStrip"
+        aria-busy="true"
+        aria-label={t(translationKey.CALENDAR_LOADING, { defaultValue: 'Loading calendar' })}
+      >
         <div className="calendarStripRow">
           {Array.from({ length: COLLAPSED_COUNT }).map((_, i) => (
             <div key={i} className="calendarStripCard calendarStripCardSkeleton">
@@ -142,7 +160,11 @@ export function CalendarStrip({
     return (
       <div className="calendarStrip">
         <div className="calendarStripRow">
-          <span className="calendarStripStatus">No match dates for this campaign.</span>
+          <span className="calendarStripStatus">
+            {t(translationKey.CALENDAR_NO_DATES, {
+              defaultValue: 'No match dates for this campaign.',
+            })}
+          </span>
         </div>
       </div>
     )
@@ -159,6 +181,9 @@ export function CalendarStrip({
             item={item}
             selected={item.date.isSame(calendarSelectedDate, 'day')}
             onClick={() => onSelectedDateChange(item.date)}
+            todayLabel={todayLabel}
+            matchSingular={matchSingular}
+            matchPlural={matchPlural}
           />
         ))}
         {expandedDates.length > 0 ? (
@@ -166,7 +191,11 @@ export function CalendarStrip({
             type="button"
             className="calendarStripToggle"
             onClick={() => setIsExpanded((prev) => !prev)}
-            aria-label={isExpanded ? 'Collapse calendar' : 'Expand calendar'}
+            aria-label={
+              isExpanded
+                ? t(translationKey.CALENDAR_COLLAPSE, { defaultValue: 'Collapse calendar' })
+                : t(translationKey.CALENDAR_EXPAND, { defaultValue: 'Expand calendar' })
+            }
           >
             {isExpanded ? <IoChevronUp /> : <IoChevronDown />}
           </button>
@@ -174,7 +203,11 @@ export function CalendarStrip({
       </div>
 
       {isExpanded && expandedRows.length > 0 ? (
-        <div className="calendarStripExpanded" role="region" aria-label="More dates">
+        <div
+          className="calendarStripExpanded"
+          role="region"
+          aria-label={t(translationKey.CALENDAR_MORE_DATES, { defaultValue: 'More dates' })}
+        >
           <div className="calendarStripExpandedScroll">
             {expandedRows.map((row, rowIdx) => (
               <div key={rowIdx} className="calendarStripExpandedRow">
@@ -184,6 +217,9 @@ export function CalendarStrip({
                     item={item}
                     selected={item.date.isSame(calendarSelectedDate, 'day')}
                     onClick={() => onSelectedDateChange(item.date)}
+                    todayLabel={todayLabel}
+                    matchSingular={matchSingular}
+                    matchPlural={matchPlural}
                   />
                 ))}
               </div>

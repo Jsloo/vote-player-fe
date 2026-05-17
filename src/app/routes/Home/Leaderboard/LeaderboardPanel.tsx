@@ -1,6 +1,8 @@
 // LeaderboardPanel.tsx
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/app/components/Skeleton";
+import { translationKey } from "@/i18n/constants";
 import LeaderboardCard, { type RankingEntry } from "./LeaderboardCard";
 import HistoryCard, { type MatchHistoryEntry } from "../History/HistoryCard";
 import styles from "./Panel.module.css";
@@ -36,6 +38,7 @@ export default function LeaderboardPanel({
                                            isLeaderboardLoading = false,
                                            isHistoryLoading = false,
                                          }: LeaderboardPanelProps) {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<"leaderboard" | "history">("leaderboard");
 
   const ITEM_HEIGHT = 56;
@@ -50,13 +53,13 @@ export default function LeaderboardPanel({
           className={`${styles.tabBtn} ${tab === "leaderboard" ? styles.tabBtnActive : ""}`}
           onClick={() => setTab("leaderboard")}
         >
-          Leaderboard
+          {t(translationKey.LEADERBOARD_TAB, { defaultValue: "Leaderboard" })}
         </button>
         <button
           className={`${styles.tabBtn} ${tab === "history" ? styles.tabBtnActive : ""}`}
           onClick={() => setTab("history")}
         >
-          History
+          {t(translationKey.HISTORY_TAB, { defaultValue: "History" })}
         </button>
       </div>
 
@@ -66,7 +69,9 @@ export default function LeaderboardPanel({
             {isLeaderboardLoading && !hasLeaderboardData ? (
               <SkeletonRows />
             ) : !hasLeaderboardData ? (
-              <div className={styles.empty}>No leaderboard yet</div>
+              <div className={styles.empty}>
+                {t(translationKey.LEADERBOARD_EMPTY, { defaultValue: "No leaderboard yet" })}
+              </div>
             ) : (
               <>
                 {currentUser && (
@@ -87,7 +92,9 @@ export default function LeaderboardPanel({
             {isHistoryLoading && history.length === 0 ? (
               <SkeletonRows />
             ) : history.length === 0 ? (
-              <div className={styles.empty}>No history yet</div>
+              <div className={styles.empty}>
+                {t(translationKey.HISTORY_EMPTY, { defaultValue: "No history yet" })}
+              </div>
             ) : (
               history.map((entry) => (
                 <div key={entry.matchId} className={styles.itemRow}>

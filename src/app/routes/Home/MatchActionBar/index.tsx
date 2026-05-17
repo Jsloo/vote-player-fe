@@ -17,7 +17,12 @@ export function MatchActionBar({ totalTicketBalance, isLoading }: MatchActionBar
   const [rulesOpen, setRulesOpen] = useState(false);
 
   return (
-    <div className="matchActionBar" aria-label="Match ticket actions">
+    <div
+      className="matchActionBar"
+      aria-label={t(translationKey.MATCH_ACTION_BAR_ARIA, {
+        defaultValue: 'Match ticket actions',
+      })}
+    >
       <Button type="text" className="matchActionBarLabel">
         {t(translationKey.MATCH_ACTION_BAR_LABEL, {
           defaultValue: 'WorldCup Match',

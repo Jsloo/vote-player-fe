@@ -9,6 +9,7 @@ import gameRuleEn from '@/assets/image/game-rule-en.png'
 import gameRuleMs from '@/assets/image/game-rule-ms.png'
 import gameRuleZh from '@/assets/image/game-rule-zhCN.png'
 import type { SupportedLanguage } from '@/app/constant'
+import { translationKey } from '@/i18n/constants'
 import styles from './index.module.css'
 
 // Module-level cache so each asset is fetched at most once per session.
@@ -47,7 +48,7 @@ function resolveLanguageKey(lang: string | undefined): SupportedLanguage {
 }
 
 export function RulesPopup({ visible, onClose }: RulesPopupProps) {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const [page, setPage] = useState<Page>('how-to-win')
   const [loaded, setLoaded] = useState<Record<string, boolean>>({})
   const hasPreloadedRef = useRef(false)
@@ -76,7 +77,9 @@ export function RulesPopup({ visible, onClose }: RulesPopupProps) {
     page === 'how-to-win' ? HOW_TO_WIN_BY_LANG[lang] : GAME_RULE_BY_LANG[lang]
 
   const imageAlt =
-    page === 'how-to-win' ? 'How to win' : 'Game rules'
+    page === 'how-to-win'
+      ? t(translationKey.RULES_POPUP_HOW_TO_WIN, { defaultValue: 'How to win' })
+      : t(translationKey.RULES_POPUP_GAME_RULES, { defaultValue: 'Game rules' })
 
   const isImageLoaded = !!loaded[imageSrc]
 
@@ -110,7 +113,7 @@ export function RulesPopup({ visible, onClose }: RulesPopupProps) {
           type="button"
           className={styles.closeHotspot}
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t(translationKey.COMMON_CLOSE, { defaultValue: 'Close' })}
         />
       </div>
 
@@ -122,7 +125,7 @@ export function RulesPopup({ visible, onClose }: RulesPopupProps) {
             e.stopPropagation()
             setPage('how-to-win')
           }}
-          aria-label="How to win"
+          aria-label={t(translationKey.RULES_POPUP_HOW_TO_WIN, { defaultValue: 'How to win' })}
         >
           <IoChevronBack aria-hidden="true" />
         </button>
@@ -136,7 +139,7 @@ export function RulesPopup({ visible, onClose }: RulesPopupProps) {
             e.stopPropagation()
             setPage('game-rule')
           }}
-          aria-label="Game rules"
+          aria-label={t(translationKey.RULES_POPUP_GAME_RULES, { defaultValue: 'Game rules' })}
         >
           <IoChevronForward aria-hidden="true" />
         </button>

@@ -8,6 +8,7 @@ import birdMascot from '@/assets/image/bird-mascot.png'
 import type { PlayerMatchResponse } from '@/app/contract'
 import { formatMatchRibbonTime } from '@/app/utils/formatMatchRibbonTime'
 import { translateRemoteLabel } from '@/app/utils/translateRemoteLabel'
+import { translationKey } from '@/i18n/constants'
 import styles from './index.module.css'
 
 export type LiveMatchCardProps = {
@@ -92,7 +93,12 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
           <div className={styles.teamTextRow}>
             <div className={styles.teamTextCol}>
               <span className={styles.teamName}>{home.team.name}</span>
-              <span className={styles.voteLine}>Total Vote {home.votedCount}</span>
+              <span className={styles.voteLine}>
+                {t(translationKey.LIVE_MATCH_TOTAL_VOTE, {
+                  defaultValue: 'Total Vote {{count}}',
+                  count: home.votedCount,
+                })}
+              </span>
             </div>
             <div className={styles.centerTextCol}>
               <span className={styles.scoreText}>
@@ -101,7 +107,12 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
             </div>
             <div className={styles.teamTextCol}>
               <span className={styles.teamName}>{away.team.name}</span>
-              <span className={styles.voteLine}>Total Vote {away.votedCount}</span>
+              <span className={styles.voteLine}>
+                {t(translationKey.LIVE_MATCH_TOTAL_VOTE, {
+                  defaultValue: 'Total Vote {{count}}',
+                  count: away.votedCount,
+                })}
+              </span>
             </div>
           </div>
 
@@ -117,8 +128,8 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
           </div>
           {match.status === 'LIVE' ? (
             <span className={styles.watchLiveNow}>
-              <span>• Watch</span>
-              <span>Live Now</span>
+              <span>• {t(translationKey.LIVE_MATCH_WATCH, { defaultValue: 'Watch' })}</span>
+              <span>{t(translationKey.LIVE_MATCH_LIVE_NOW, { defaultValue: 'Live Now' })}</span>
             </span>
           ) : null}
         </div>

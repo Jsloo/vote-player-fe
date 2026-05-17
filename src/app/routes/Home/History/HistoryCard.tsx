@@ -1,6 +1,8 @@
 // HistoryCard.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import voteRibbon from "@/assets/image/vote-ribbon.png";
+import { translationKey } from "@/i18n/constants";
 import logoBorder from "@/assets/image/vote-logo-border.png";
 import historyBanner from "@/assets/image/history-banner.png";
 import styles from "./index.module.css";
@@ -29,8 +31,24 @@ const resultClassMap: Record<MatchHistoryEntry["result"], string> = {
   DRAW: styles.resultDraw,
 };
 
+const resultKeyMap = {
+  WIN: translationKey.HISTORY_RESULT_WIN,
+  LOSS: translationKey.HISTORY_RESULT_LOSS,
+  PENDING: translationKey.HISTORY_RESULT_PENDING,
+  DRAW: translationKey.HISTORY_RESULT_DRAW,
+} as const;
+
+const resultDefaultMap = {
+  WIN: "WIN",
+  LOSS: "LOSS",
+  PENDING: "PENDING",
+  DRAW: "DRAW",
+} as const;
+
 export default function HistoryCard({ entry }: HistoryCardProps) {
+  const { t } = useTranslation();
   const { firstTeam, matchName, matchTitle, secondTeam, votedTeam, result, based, strike, total } = entry;
+  const resultLabel = t(resultKeyMap[result], { defaultValue: resultDefaultMap[result] });
 
   return (
     <div className={styles.cardWrap}>
@@ -47,17 +65,19 @@ export default function HistoryCard({ entry }: HistoryCardProps) {
               flagUrl={firstTeam.flagUrl}
               alt={firstTeam.name}
               voted={votedTeam === "first"}
+              voteRibbonAlt={t(translationKey.COMMON_VOTE_RIBBON, { defaultValue: "VOTE" })}
             />
             <span className={styles.teamName}>{firstTeam.name}</span>
           </div>
 
-          <span className={styles.vs}>VS</span>
+          <span className={styles.vs}>{t(translationKey.COMMON_VS, { defaultValue: "VS" })}</span>
 
           <div className={styles.teamCol}>
             <FlagWithRibbon
               flagUrl={secondTeam.flagUrl}
               alt={secondTeam.name}
               voted={votedTeam === "second"}
+              voteRibbonAlt={t(translationKey.COMMON_VOTE_RIBBON, { defaultValue: "VOTE" })}
             />
             <span className={styles.teamName}>{secondTeam.name}</span>
           </div>
@@ -66,14 +86,24 @@ export default function HistoryCard({ entry }: HistoryCardProps) {
         <div className={styles.rightSide}>
           <div className={styles.statsRow}>
             <div className={`${styles.result} ${resultClassMap[result]}`}>
-              — {result} —
+              — {resultLabel} —
             </div>
 
-            <Stat value={based} label="Based" />
+            <Stat
+              value={based}
+              label={t(translationKey.HISTORY_BASED, { defaultValue: "Based" })}
+            />
             <Operator>×</Operator>
-            <Stat value={strike} label="Strike" />
+            <Stat
+              value={strike}
+              label={t(translationKey.HISTORY_STRIKE, { defaultValue: "Strike" })}
+            />
             <Operator>=</Operator>
-            <Stat value={total} label="Total" highlight />
+            <Stat
+              value={total}
+              label={t(translationKey.HISTORY_TOTAL, { defaultValue: "Total" })}
+              highlight
+            />
           </div>
         </div>
       </div>
@@ -85,10 +115,12 @@ function FlagWithRibbon({
                           flagUrl,
                           alt,
                           voted,
+                          voteRibbonAlt,
                         }: {
   flagUrl: string;
   alt: string;
   voted: boolean;
+  voteRibbonAlt: string;
 }) {
   return (
     <div className={styles.flagWrap}>
@@ -100,7 +132,7 @@ function FlagWithRibbon({
       </div>
 
       {voted && (
-        <img src={voteRibbon} alt="VOTE" className={styles.ribbon} />
+        <img src={voteRibbon} alt={voteRibbonAlt} className={styles.ribbon} />
       )}
     </div>
   );

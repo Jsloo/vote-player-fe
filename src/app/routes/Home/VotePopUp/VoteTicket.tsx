@@ -162,7 +162,9 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                   disabled={loading}
                   type="button"
                 >
-                  <span className={styles.sideLabel}>Home</span>
+                  <span className={styles.sideLabel}>
+                    {t(translationKey.COMMON_HOME_SIDE, { defaultValue: 'Home' })}
+                  </span>
                   <div
                     className={`${styles.flagCircle} ${selected === "first" ? styles.flagCircleSelected : ""}`}
                     style={{ backgroundImage: `url(${flagBorder})` }}
@@ -182,7 +184,9 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                   />
                 </button>
 
-                <div className={styles.vs}>VS</div>
+                <div className={styles.vs}>
+                  {t(translationKey.COMMON_VS, { defaultValue: 'VS' })}
+                </div>
 
                 <button
                   className={styles.teamBtn}
@@ -190,7 +194,9 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                   disabled={loading}
                   type="button"
                 >
-                  <span className={styles.sideLabel}>Away</span>
+                  <span className={styles.sideLabel}>
+                    {t(translationKey.COMMON_AWAY_SIDE, { defaultValue: 'Away' })}
+                  </span>
                   <div
                     className={`${styles.flagCircle} ${selected === "second" ? styles.flagCircleSelected : ""}`}
                     style={{ backgroundImage: `url(${flagBorder})` }}
@@ -224,7 +230,11 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                       className={styles.votedFlagImg}
                     />
                   </div>
-                  <img src={voteRibbon} alt="VOTE" className={styles.ribbon} />
+                  <img
+                    src={voteRibbon}
+                    alt={t(translationKey.COMMON_VOTE_RIBBON, { defaultValue: 'VOTE' })}
+                    className={styles.ribbon}
+                  />
                 </div>
                 <div className={styles.votedTeamName}>{translateRemoteLabel(t, votedTeam.name)}</div>
                 <div className={styles.votedSuccess}>{t(translationKey.VOTE_POPUP_VOTED_SUCCESS, { defaultValue: 'Voted Successfully' })}</div>

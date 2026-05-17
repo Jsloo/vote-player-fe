@@ -1,6 +1,7 @@
 import { skipToken, useQueryClient } from '@tanstack/react-query'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   type PlayerMatchResponse,
   type SseScoreData,
@@ -24,10 +25,12 @@ import { type RankingEntry } from "@/app/routes/Home/Leaderboard/LeaderboardCard
 import LeaderboardPanel from "@/app/routes/Home/Leaderboard/LeaderboardPanel.tsx"
 import { type MatchHistoryEntry } from "@/app/routes/Home/History/HistoryCard.tsx"
 import soccerSuccessSound from '@/assets/mp3/success.mp3'
+import { translationKey } from '@/i18n/constants'
 
 const DEFAULT_SSE_EVENTS = ['message'] as const
 
 function HomeHallContent() {
+  const { t } = useTranslation()
   const campaignId = useMemo(() => parseCampaignIdFromEnv(), [])
   const [selectedMatchDate, setSelectedMatchDate] = useState<Dayjs>(() => dayjs())
   const [voteMatch, setVoteMatch] = useState<MatchVoteData | null>(null)
@@ -252,7 +255,9 @@ function HomeHallContent() {
   )
 
   return (
-    <section aria-label="Promotional banner">
+    <section
+      aria-label={t(translationKey.HOME_PROMO_BANNER, { defaultValue: 'Promotional banner' })}
+    >
       <Banner />
       <MatchActionBar
         totalTicketBalance={totalTicketBalance}

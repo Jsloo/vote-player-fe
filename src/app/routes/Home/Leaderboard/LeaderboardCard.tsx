@@ -1,5 +1,7 @@
 // LeaderboardCard.tsx
+import { useTranslation } from "react-i18next";
 import leopardImg from "@/assets/image/leopard-avatar.png";
+import { translationKey } from "@/i18n/constants";
 import eagleImg from "@/assets/image/eagle-avatar.png";
 import medal1 from "@/assets/image/gold.png";
 import medal2 from "@/assets/image/silver.png";
@@ -123,6 +125,7 @@ function formatPoints(n: number): string {
 }
 
 export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCardProps) {
+  const { t } = useTranslation();
   const { username, totalPoints, currentStreak, rank } = entry;
 
   const theme = getThemeClasses(rank, isCurrentUser);
@@ -136,12 +139,18 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
 
   const renderRank = () => {
     if (useMedal) return <Medal rank={rank} extraClass={sz.medal} />;
-    const label = rank === 0 ? "—" : `${rank}th`;
+    const label =
+      rank === 0
+        ? "—"
+        : t(translationKey.LEADERBOARD_RANK_ORDINAL, {
+            defaultValue: "{{rank}}th",
+            rank,
+          });
     return (
-      <div className={`${styles.rankWrap} ${sz.rankWrap}`}>
+      <div className={styles.rankWrap}>
         {isCurrentUser && (
-          <div className={`${styles.yourRankLabel} ${sz.yourRankLabel}`}>
-            Your Rank
+          <div className={styles.yourRankLabel}>
+            {t(translationKey.LEADERBOARD_YOUR_RANK, { defaultValue: "Your Rank" })}
           </div>
         )}
         <div className={`${styles.rankPill} ${sz.rankPill}`}>
@@ -162,7 +171,7 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
         >
           <img
             src={rank === 1 ? leopardImg : eagleImg}
-            alt="mascot"
+            alt={t(translationKey.LEADERBOARD_MASCOT, { defaultValue: "mascot" })}
             className={styles.mascotImg}
           />
         </div>
@@ -177,13 +186,16 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
           className={`${styles.streakPill} ${sz.streakPill}`}
           style={{ backgroundColor: getStreakColor(currentStreak) }}
         >
-          {`Streak X${currentStreak}`}
+          {t(translationKey.LEADERBOARD_STREAK, {
+            defaultValue: "Streak X{{count}}",
+            count: currentStreak,
+          })}
         </div>
       )}
 
       <div className={`${styles.pointWrap} ${sz.pointWrap}`}>
         <div className={`${styles.pointLabel} ${sz.pointLabel} ${theme.pointLabel}`}>
-          Point
+          {t(translationKey.LEADERBOARD_POINT, { defaultValue: "Point" })}
         </div>
         <div className={`${styles.pointPill} ${theme.pointPill}`}>
           <CoinIcon extraClass={sz.coin} />
@@ -197,16 +209,24 @@ export default function LeaderboardCard({ entry, isCurrentUser }: LeaderboardCar
 }
 
 function Medal({ rank, extraClass }: { rank: number; extraClass?: string }) {
+  const { t } = useTranslation();
   const medalImages: Record<number, string> = { 1: medal1, 2: medal2, 3: medal3 };
   return (
     <img
       src={medalImages[rank]}
-      alt={`Rank ${rank}`}
+      alt={t(translationKey.LEADERBOARD_RANK, { defaultValue: "Rank {{rank}}", rank })}
       className={`${styles.medal} ${extraClass ?? ''}`}
     />
   );
 }
 
 function CoinIcon({ extraClass }: { extraClass?: string }) {
-  return <img src={coinImg} alt="coin" className={`${styles.coin} ${extraClass ?? ''}`} />;
+  const { t } = useTranslation();
+  return (
+    <img
+      src={coinImg}
+      alt={t(translationKey.LEADERBOARD_COIN, { defaultValue: "coin" })}
+      className={`${styles.coin} ${extraClass ?? ''}`}
+    />
+  );
 }
