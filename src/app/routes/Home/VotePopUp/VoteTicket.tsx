@@ -139,7 +139,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
             className={`${styles.ticket} ${voted ? styles.ticketVoted : ''}`}
             style={{ backgroundImage: `url(${blueImg})` }}
           >
-            <div className={`${styles.ticketHeader} ${voted ? styles.ticketHeaderVoted : ''}`}>
+            <div className={`${styles.ticketHeader}`}>
               <div className={styles.matchName}>{match.matchName}</div>
               <div className={styles.matchTime}>{formattedTime}</div>
             </div>

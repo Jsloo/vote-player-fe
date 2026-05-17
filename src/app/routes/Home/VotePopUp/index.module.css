@@ -78,6 +78,7 @@
 
 .ticket {
     width: 80%;
+    height: 250px;
     background-size: cover;
     background-position: center;
     border-radius: 20px;
@@ -95,19 +96,14 @@
     justify-content: center;
     gap: 0;
     width: 70%;
-    margin: -18px auto 16px;
+    margin: -5px auto 5px;
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 10px;
     padding: 10px 16px;
     box-sizing: border-box;
     flex-shrink: 0;
     position: relative;
     z-index: 2;
-}
-
-/* voted 状态下让 header 在 ticket 内部正常位置 */
-.ticketHeaderVoted {
-    margin: -16px auto 16px;
 }
 
 .matchName {
@@ -249,16 +245,21 @@
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
-/* ── Voted state ── */
 .votedWrap {
     text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;                        /* 改:4 → 6 */
 }
 
 .votedFlagWrap {
     position: relative;
-    width: 130px;
-    height: 130px;
-    margin: 12px auto 8px;
+    width: 110px;                    /* 改:95 → 110 */
+    height: 110px;                   /* 改:95 → 110 */
+    margin: 0;
 }
 
 .votedFlagCircle {
@@ -273,31 +274,32 @@
 }
 
 .votedFlagImg {
-    width: 120px;
-    height: 114px;
+    width: 96px;                     /* 改:84 → 96 */
+    height: 92px;                    /* 改:80 → 92 */
     object-fit: cover;
     border-radius: 50%;
 }
 
 .ribbon {
     position: absolute;
-    top: 4px;       /* 之前是 -6px，往下移让它贴近圆圈 */
-    right: 4px;     /* 之前是 -8px，往左移让它贴近圆圈 */
-    width: 60px;    /* 之前是 70px，稍微小一点更协调 */
+    top: 0px;                       /* 改:2 → -4,往上外推 */
+    right: -5px;                     /* 改:2 → -4,往右外推 */
+    width: 80px;                     /* 改:52 → 58,稍微大一点确保盖满 */
     height: auto;
     transform: rotate(15deg);
     pointer-events: none;
 }
 
 .votedTeamName {
-    font-size: 18px;
+    font-size: 17px;                 /* 改:16 → 17 */
     font-weight: 700;
+    margin-top: 4px;
 }
 
 .votedSuccess {
-    font-size: 13px;
+    font-size: 13px;                 /* 改:12 → 13 */
     color: rgba(255, 255, 255, 0.85);
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .errorMessage {

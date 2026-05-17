@@ -23,6 +23,7 @@ import MatchVotePopup ,{ type MatchVoteData } from "@/app/routes/Home/VotePopUp/
 import { type RankingEntry } from "@/app/routes/Home/Leaderboard/LeaderboardCard.tsx"
 import LeaderboardPanel from "@/app/routes/Home/Leaderboard/LeaderboardPanel.tsx"
 import { type MatchHistoryEntry } from "@/app/routes/Home/History/HistoryCard.tsx"
+import soccerSuccessSound from '@/assets/mp3/success.mp3'
 
 const DEFAULT_SSE_EVENTS = ['message'] as const
 
@@ -45,6 +46,11 @@ function HomeHallContent() {
         ? { params: { campaignId }, query: { date: selectedDateStr } }
         : skipToken,
   })
+
+  const voteSuccessAudio = typeof Audio !== 'undefined'
+    ? new Audio(soccerSuccessSound)
+    : null
+  if (voteSuccessAudio) voteSuccessAudio.volume = 0.4
 
   const { data: ticketData, isPending: isTicketPending } = tsr.getTicket.useQuery({
     queryKey: ['getTicket', campaignId],
@@ -186,6 +192,12 @@ function HomeHallContent() {
           console.warn('Vote business error:', data.body)
         }
         return
+      }
+
+      // 播放投票成功音效
+      if (voteSuccessAudio) {
+        voteSuccessAudio.currentTime = 0
+        voteSuccessAudio.play().catch(() => {})
       }
 
       void queryClient.invalidateQueries({ queryKey: ['getMatch', campaignId] })
