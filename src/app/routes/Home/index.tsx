@@ -168,6 +168,7 @@ function HomeHallContent() {
     setVoteMatch({
       matchId: match.id,
       matchName: match.matchName,
+      titleName: match.titleName,
       matchTime: match.matchTime,
       firstTeam: {
         teamId : firstTeam.team.id,

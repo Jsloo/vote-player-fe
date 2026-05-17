@@ -21,4 +21,12 @@ export const translationKey = {
 
   SESSION_ENTRY_MESSAGE: 'sessionEntry.message',
   SESSION_INVALID_TOAST: 'sessionEntry.invalidToast',
+
+  VOTE_POPUP_TITLE: 'votePopup.title',
+  VOTE_POPUP_SUBTITLE_REVIEW: 'votePopup.subtitleReview',
+  VOTE_POPUP_SUBTITLE_THANKS: 'votePopup.subtitleThanks',
+  VOTE_POPUP_CONFIRM: 'votePopup.confirm',
+  VOTE_POPUP_PROCESSING: 'votePopup.processing',
+  VOTE_POPUP_CLOSE: 'votePopup.close',
+  VOTE_POPUP_VOTED_SUCCESS: 'votePopup.votedSuccess',
 } as const

@@ -7,10 +7,14 @@ import checkIcon from '@/assets/image/checkIcon.png';
 import voteRibbon from '@/assets/image/vote-ribbon.png';
 import styles from './index.module.css';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+import { translationKey } from '@/i18n/constants'
+import { translateRemoteLabel } from '@/app/utils/translateRemoteLabel';
 
 export interface MatchVoteData {
   matchId: number;
   matchName: string;
+  titleName: string;
   matchTime: string;
   firstTeam: { teamId: number; name: string; flagUrl: string; };
   secondTeam: { teamId: number; name: string; flagUrl: string; };
@@ -50,6 +54,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
   const [voted, setVoted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const formattedTime = dayjs(match.matchTime).format('D MMM, h:mm a');
 
@@ -126,11 +131,15 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
 
 
         <div className={styles.bannerText}>
-          <div className={styles.bannerTitle}>WORLDCUP YOUR TEAM</div>
+          <div className={styles.bannerTitle}>{t(translationKey.VOTE_POPUP_TITLE, { defaultValue: 'WORLDCUP YOUR TEAM' })}</div>
           <div className={styles.bannerSubtitle}>
             {voted
-              ? "Thank you for your vote!"
-              : "Please Review Your Ticket Details Before Confirming."}
+              ? t(translationKey.VOTE_POPUP_SUBTITLE_THANKS, {
+                defaultValue: 'Thank you for your vote!',
+              })
+              : t(translationKey.VOTE_POPUP_SUBTITLE_REVIEW, {
+                defaultValue: 'Please Review Your Ticket Details Before Confirming.',
+              })}
           </div>
         </div>
 
@@ -140,7 +149,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
             style={{ backgroundImage: `url(${blueImg})` }}
           >
             <div className={`${styles.ticketHeader}`}>
-              <div className={styles.matchName}>{match.matchName}</div>
+              <div className={styles.matchName}>{translateRemoteLabel(t, match.matchName)}.{translateRemoteLabel(t, match.titleName)}</div>
               <div className={styles.matchTime}>{formattedTime}</div>
             </div>
 
@@ -164,7 +173,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                       className={styles.flagImg}
                     />
                   </div>
-                  <span className={styles.teamName}>{match.firstTeam.name}</span>
+                  <span className={styles.teamName}>{translateRemoteLabel(t, match.firstTeam.name)}</span>
                   <div
                     className={`${styles.checkbox} ${selected === "first" ? styles.checkboxChecked : ""}`}
                     style={{
@@ -192,7 +201,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                       className={styles.flagImg}
                     />
                   </div>
-                  <span className={styles.teamName}>{match.secondTeam.name}</span>
+                  <span className={styles.teamName}> {translateRemoteLabel(t, match.secondTeam.name)}</span>
                   <div
                     className={`${styles.checkbox} ${selected === "second" ? styles.checkboxChecked : ""}`}
                     style={{
@@ -217,8 +226,8 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
                   </div>
                   <img src={voteRibbon} alt="VOTE" className={styles.ribbon} />
                 </div>
-                <div className={styles.votedTeamName}>{votedTeam.name}</div>
-                <div className={styles.votedSuccess}>Voted Successfully</div>
+                <div className={styles.votedTeamName}>{translateRemoteLabel(t, votedTeam.name)}</div>
+                <div className={styles.votedSuccess}>{t(translationKey.VOTE_POPUP_VOTED_SUCCESS, { defaultValue: 'Voted Successfully' })}</div>
               </div>
             )}
           </div>
@@ -230,7 +239,9 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
               disabled={!selected || loading}
               type="button"
             >
-              {loading ? 'PROCESSING...' : 'CONFIRM TICKET'}
+              {loading
+                ? t(translationKey.VOTE_POPUP_PROCESSING, { defaultValue: 'PROCESSING...' })
+                : t(translationKey.VOTE_POPUP_CONFIRM, { defaultValue: 'CONFIRM TICKET' })}
             </button>
           ) : (
             <button
@@ -238,7 +249,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
               onClick={handleClose}
               type="button"
             >
-              CLOSE
+              {t(translationKey.VOTE_POPUP_CLOSE, { defaultValue: 'CLOSE' })}
             </button>
           )}
         </div>
