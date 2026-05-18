@@ -5,6 +5,7 @@ import voteButton from '@/assets/image/vote-button.png'
 import type { PlayerMatchResponse } from '@/app/contract'
 import { translationKey } from '@/i18n/constants'
 import styles from './index.module.css'
+import { translateRemoteLabel } from "@/app/utils/translateRemoteLabel";
 
 type Props = {
   match: PlayerMatchResponse
@@ -46,7 +47,7 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
             <img src={home.team.logoUrl} alt={home.team.name} className={styles.flagImg} />
             <img src={countryFrameMatch} alt="" aria-hidden="true" className={styles.frameOverlay} />
           </div>
-          <span className={styles.teamName}>{home.team.name}</span>
+          <span className={styles.teamName}>{translateRemoteLabel(t, home.team.name)}</span>
         </div>
 
         <div className={styles.centerCol}>
@@ -66,7 +67,7 @@ export function MatchByDateCard({ match,onVoteClick }: Props) {
             <img src={away.team.logoUrl} alt={away.team.name} className={styles.flagImg} />
             <img src={countryFrameMatch} alt="" aria-hidden="true" className={styles.frameOverlay} />
           </div>
-          <span className={styles.teamName}>{away.team.name}</span>
+          <span className={styles.teamName}>{translateRemoteLabel(t, away.team.name)}</span>
         </div>
       </div>
 

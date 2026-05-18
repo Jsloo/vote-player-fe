@@ -149,7 +149,7 @@ export default function MatchVotePopup({ match, onConfirm, onBack }: MatchVotePo
             style={{ backgroundImage: `url(${blueImg})` }}
           >
             <div className={`${styles.ticketHeader}`}>
-              <div className={styles.matchName}>{translateRemoteLabel(t, match.matchName)}.{translateRemoteLabel(t, match.titleName)}</div>
+              <div className={styles.matchName}>{translateRemoteLabel(t, match.matchName)}·{translateRemoteLabel(t, match.titleName)}</div>
               <div className={styles.matchTime}>{formattedTime}</div>
             </div>
 

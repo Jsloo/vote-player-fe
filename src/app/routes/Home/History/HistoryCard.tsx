@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import voteRibbon from "@/assets/image/vote-ribbon.png";
 import { translationKey } from "@/i18n/constants";
+import { translateRemoteLabel } from "@/app/utils/translateRemoteLabel";
 import logoBorder from "@/assets/image/vote-logo-border.png";
 import historyBanner from "@/assets/image/history-banner.png";
 import styles from "./index.module.css";
@@ -56,7 +57,7 @@ export default function HistoryCard({ entry }: HistoryCardProps) {
         className={styles.banner}
         style={{ backgroundImage: `url(${historyBanner})` }}
       >
-        <span className={styles.bannerText}>{matchName} · {matchTitle}</span>
+        <span className={styles.bannerText}>{translateRemoteLabel(t, matchName)} · {translateRemoteLabel(t, matchTitle)}</span>
       </div>
       <div className={styles.card}>
         <div className={styles.leftSide}>
@@ -67,7 +68,7 @@ export default function HistoryCard({ entry }: HistoryCardProps) {
               voted={votedTeam === "first"}
               voteRibbonAlt={t(translationKey.COMMON_VOTE_RIBBON, { defaultValue: "VOTE" })}
             />
-            <span className={styles.teamName}>{firstTeam.name}</span>
+            <span className={styles.teamName}>{translateRemoteLabel(t, firstTeam.name)}</span>
           </div>
 
           <span className={styles.vs}>{t(translationKey.COMMON_VS, { defaultValue: "VS" })}</span>
@@ -79,7 +80,7 @@ export default function HistoryCard({ entry }: HistoryCardProps) {
               voted={votedTeam === "second"}
               voteRibbonAlt={t(translationKey.COMMON_VOTE_RIBBON, { defaultValue: "VOTE" })}
             />
-            <span className={styles.teamName}>{secondTeam.name}</span>
+            <span className={styles.teamName}>{translateRemoteLabel(t, secondTeam.name)}</span>
           </div>
         </div>
 

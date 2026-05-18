@@ -92,7 +92,7 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
 
           <div className={styles.teamTextRow}>
             <div className={styles.teamTextCol}>
-              <span className={styles.teamName}>{home.team.name}</span>
+              <span className={styles.teamName}>{translateRemoteLabel(t,home.team.name)}</span>
               <span className={styles.voteLine}>
                 {t(translationKey.LIVE_MATCH_TOTAL_VOTE, {
                   defaultValue: 'Total Vote {{count}}',
@@ -106,7 +106,7 @@ export function LiveMatchCard({ match, isLoading }: LiveMatchCardProps) {
               </span>
             </div>
             <div className={styles.teamTextCol}>
-              <span className={styles.teamName}>{away.team.name}</span>
+              <span className={styles.teamName}>{translateRemoteLabel(t,away.team.name)}</span>
               <span className={styles.voteLine}>
                 {t(translationKey.LIVE_MATCH_TOTAL_VOTE, {
                   defaultValue: 'Total Vote {{count}}',
