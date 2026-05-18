@@ -11,7 +11,7 @@ import { safeParseStorage } from '@/app/utils/sessionTools'
 
 /**
  * Resolves the active language using the same precedence as the lucky-draw app:
- *   1. `langCode` URL query param mapped through `languageMap`
+ *   1. Parent `langCode` query param (`EN` | `CH` | `MY`) via `languageMap`
  *   2. previously stored value in `sessionStorage[LANGUAGE_KEY]`
  *   3. `DEFAULT_LANGUAGE` ('en')
  */
